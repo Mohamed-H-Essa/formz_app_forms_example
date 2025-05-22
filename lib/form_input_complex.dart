@@ -180,9 +180,7 @@ class FormCubit extends Cubit<FormzState> {
         Map<FormFieldEnum, FormzInput>.from(state.currentStep.inputs)
           ..[field] = input;
     emit(state.copyWith(
-        currentStep: state.currentStep.copyWith(
-            inputs: updatedInputs
-              ..debug('Room999 : from update input copywith '))));
+        currentStep: state.currentStep.copyWith(inputs: updatedInputs)));
   }
 
   /// Attempts to submit the form, updating status based on validation result

@@ -236,14 +236,14 @@ class _PersonalInformationForm extends StatelessWidget {
 
   Widget _buildFirstNameField() {
     return BlocBuilder<FormCubit, FormzState>(
-      // buildWhen: (previous, current) {
-      //   final previousInput = previous.currentStep
-      //       .inputs[FormFieldEnum.firstName] as GenericInput<String>?;
-      //   final currentInput = current.currentStep.inputs[FormFieldEnum.firstName]
-      //       as GenericInput<String>?;
-      //   return previousInput?.value != currentInput?.value ||
-      //       previousInput?.isPure != currentInput?.isPure;
-      // },
+      buildWhen: (previous, current) {
+        final previousInput = previous.currentStep
+            .inputs[FormFieldEnum.firstName] as GenericInput<String>?;
+        final currentInput = current.currentStep.inputs[FormFieldEnum.firstName]
+            as GenericInput<String>?;
+        return previousInput?.value != currentInput?.value ||
+            previousInput?.isPure != currentInput?.isPure;
+      },
       builder: (context, state) {
         final input = state.currentStep.inputs[FormFieldEnum.firstName]
             as GenericInput<String>?;
