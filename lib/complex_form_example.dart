@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:formz_example/debug_extension.dart';
+import 'package:formz_example/form_field.dart';
 import 'validators.dart';
-import 'form_input.dart';
+import 'form_input_complex.dart';
 
 class ComplexFormExample extends StatelessWidget {
   const ComplexFormExample({Key? key}) : super(key: key);
@@ -153,7 +155,7 @@ class _ComplexFormContentState extends State<_ComplexFormContent> {
               const SizedBox(),
             if (_currentSection < _formSections.length - 1)
               ElevatedButton(
-                onPressed: _validateCurrentSection()
+                onPressed: _validateCurrentStep()
                     ? () {
                         setState(() {
                           _currentSection++;
@@ -164,7 +166,7 @@ class _ComplexFormContentState extends State<_ComplexFormContent> {
               )
             else
               ElevatedButton(
-                onPressed: _validateCurrentSection() && state.isValid
+                onPressed: _validateCurrentStep() && state.isAllValid
                     ? () => context.read<FormCubit>().submit()
                     : null,
                 child: state.status == FormzSubmissionStatus.inProgress
@@ -184,11 +186,11 @@ class _ComplexFormContentState extends State<_ComplexFormContent> {
     );
   }
 
-  bool _validateCurrentSection() {
+  bool _validateCurrentStep() {
     final cubit = context.read<FormCubit>();
     final state = cubit.state;
 
-    switch (_currentSection) {
+    switch (_currentSection..debug('Room201')) {
       case 0:
         return _isPersonalInfoValid(state);
       case 1:
@@ -201,18 +203,19 @@ class _ComplexFormContentState extends State<_ComplexFormContent> {
   }
 
   bool _isPersonalInfoValid(FormzState state) {
-    return state.inputs['firstName']?.isValid == true &&
-        state.inputs['lastName']?.isValid == true &&
-        state.inputs['dob']?.isValid == true;
+    return state.step1.inputs[FormFieldEnum.firstName]?.isValid == true &&
+        state.step1.inputs[FormFieldEnum.lastName]?.isValid == true &&
+        state.step1.inputs[FormFieldEnum.dob]?.isValid == true;
   }
 
   bool _isContactDetailsValid(FormzState state) {
-    return state.inputs['email']?.isValid == true &&
-        state.inputs['phone']?.isValid == true;
+    return state.step2.inputs[FormFieldEnum.email]?.isValid == true &&
+        state.step2.inputs[FormFieldEnum.phone]?.isValid == true;
   }
 
   bool _isPreferencesValid(FormzState state) {
-    return state.inputs['notificationChannel']?.isValid == true;
+    return state.step3.inputs[FormFieldEnum.notificationChannel]?.isValid ==
+        true;
   }
 }
 
@@ -233,20 +236,22 @@ class _PersonalInformationForm extends StatelessWidget {
 
   Widget _buildFirstNameField() {
     return BlocBuilder<FormCubit, FormzState>(
-      buildWhen: (previous, current) {
-        final previousInput =
-            previous.inputs['firstName'] as GenericInput<String>?;
-        final currentInput =
-            current.inputs['firstName'] as GenericInput<String>?;
-        return previousInput?.value != currentInput?.value ||
-            previousInput?.isPure != currentInput?.isPure;
-      },
+      // buildWhen: (previous, current) {
+      //   final previousInput = previous.currentStep
+      //       .inputs[FormFieldEnum.firstName] as GenericInput<String>?;
+      //   final currentInput = current.currentStep.inputs[FormFieldEnum.firstName]
+      //       as GenericInput<String>?;
+      //   return previousInput?.value != currentInput?.value ||
+      //       previousInput?.isPure != currentInput?.isPure;
+      // },
       builder: (context, state) {
-        final input = state.inputs['firstName'] as GenericInput<String>?;
+        final input = state.currentStep.inputs[FormFieldEnum.firstName]
+            as GenericInput<String>?;
         return TextFormField(
+          initialValue: input?.value,
           key: const Key('complexForm_firstName_textField'),
           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-            'firstName',
+            FormFieldEnum.firstName,
             value,
             [requiredValidator],
           ),
@@ -262,20 +267,22 @@ class _PersonalInformationForm extends StatelessWidget {
 
   Widget _buildLastNameField() {
     return BlocBuilder<FormCubit, FormzState>(
-      buildWhen: (previous, current) {
-        final previousInput =
-            previous.inputs['lastName'] as GenericInput<String>?;
-        final currentInput =
-            current.inputs['lastName'] as GenericInput<String>?;
-        return previousInput?.value != currentInput?.value ||
-            previousInput?.isPure != currentInput?.isPure;
-      },
+      // buildWhen: (previous, current) {
+      //   final previousInput = previous.currentStep
+      //       .inputs[FormFieldEnum.lastName] as GenericInput<String>?;
+      //   final currentInput = current.currentStep.inputs[FormFieldEnum.lastName]
+      //       as GenericInput<String>?;
+      //   return previousInput?.value != currentInput?.value ||
+      //       previousInput?.isPure != currentInput?.isPure;
+      // },
       builder: (context, state) {
-        final input = state.inputs['lastName'] as GenericInput<String>?;
+        final input = state.currentStep.inputs[FormFieldEnum.lastName]
+            as GenericInput<String>?;
         return TextFormField(
+          initialValue: input?.value,
           key: const Key('complexForm_lastName_textField'),
           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-            'lastName',
+            FormFieldEnum.lastName,
             value,
             [requiredValidator],
           ),
@@ -291,18 +298,22 @@ class _PersonalInformationForm extends StatelessWidget {
 
   Widget _buildDateOfBirthField() {
     return BlocBuilder<FormCubit, FormzState>(
-      buildWhen: (previous, current) {
-        final previousInput = previous.inputs['dob'] as GenericInput<String>?;
-        final currentInput = current.inputs['dob'] as GenericInput<String>?;
-        return previousInput?.value != currentInput?.value ||
-            previousInput?.isPure != currentInput?.isPure;
-      },
+      // buildWhen: (previous, current) {
+      //   final previousInput = previous.currentStep.inputs[FormFieldEnum.dob]
+      //       as GenericInput<String>?;
+      //   final currentInput = current.currentStep.inputs[FormFieldEnum.dob]
+      //       as GenericInput<String>?;
+      //   return previousInput?.value != currentInput?.value ||
+      //       previousInput?.isPure != currentInput?.isPure;
+      // },
       builder: (context, state) {
-        final input = state.inputs['dob'] as GenericInput<String>?;
+        final input = state.currentStep.inputs[FormFieldEnum.dob]
+            as GenericInput<String>?;
         return TextFormField(
+          initialValue: input?.value,
           key: const Key('complexForm_dob_textField'),
           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-            'dob',
+            FormFieldEnum.dob,
             value,
             [
               requiredValidator,
@@ -344,18 +355,22 @@ class _ContactDetailsForm extends StatelessWidget {
 
   Widget _buildEmailField() {
     return BlocBuilder<FormCubit, FormzState>(
-      buildWhen: (previous, current) {
-        final previousInput = previous.inputs['email'] as GenericInput<String>?;
-        final currentInput = current.inputs['email'] as GenericInput<String>?;
-        return previousInput?.value != currentInput?.value ||
-            previousInput?.isPure != currentInput?.isPure;
-      },
+      // buildWhen: (previous, current) {
+      //   final previousInput = previous.currentStep.inputs[FormFieldEnum.email]
+      //       as GenericInput<String>?;
+      //   final currentInput = current.currentStep.inputs[FormFieldEnum.email]
+      //       as GenericInput<String>?;
+      //   return previousInput?.value != currentInput?.value ||
+      //       previousInput?.isPure != currentInput?.isPure;
+      // },
       builder: (context, state) {
-        final input = state.inputs['email'] as GenericInput<String>?;
+        final input = state.currentStep.inputs[FormFieldEnum.email]
+            as GenericInput<String>?;
         return TextFormField(
           key: const Key('complexForm_email_textField'),
+          initialValue: input?.value,
           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-            'email',
+            FormFieldEnum.email,
             value,
             [requiredValidator, emailValidator],
           ),
@@ -372,18 +387,22 @@ class _ContactDetailsForm extends StatelessWidget {
 
   Widget _buildPhoneField() {
     return BlocBuilder<FormCubit, FormzState>(
-      buildWhen: (previous, current) {
-        final previousInput = previous.inputs['phone'] as GenericInput<String>?;
-        final currentInput = current.inputs['phone'] as GenericInput<String>?;
-        return previousInput?.value != currentInput?.value ||
-            previousInput?.isPure != currentInput?.isPure;
-      },
+      // buildWhen: (previous, current) {
+      //   final previousInput = previous.currentStep.inputs[FormFieldEnum.phone]
+      //       as GenericInput<String>?;
+      //   final currentInput = current.currentStep.inputs[FormFieldEnum.phone]
+      //       as GenericInput<String>?;
+      //   return previousInput?.value != currentInput?.value ||
+      //       previousInput?.isPure != currentInput?.isPure;
+      // },
       builder: (context, state) {
-        final input = state.inputs['phone'] as GenericInput<String>?;
+        final input = state.currentStep.inputs[FormFieldEnum.phone]
+            as GenericInput<String>?;
         return TextFormField(
+          initialValue: input?.value,
           key: const Key('complexForm_phone_textField'),
           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-            'phone',
+            FormFieldEnum.phone,
             value,
             [
               requiredValidator,
@@ -408,19 +427,22 @@ class _ContactDetailsForm extends StatelessWidget {
 
   Widget _buildAddressField() {
     return BlocBuilder<FormCubit, FormzState>(
-      buildWhen: (previous, current) {
-        final previousInput =
-            previous.inputs['address'] as GenericInput<String>?;
-        final currentInput = current.inputs['address'] as GenericInput<String>?;
-        return previousInput?.value != currentInput?.value ||
-            previousInput?.isPure != currentInput?.isPure;
-      },
+      // buildWhen: (previous, current) {
+      //   final previousInput = previous.currentStep.inputs[FormFieldEnum.address]
+      //       as GenericInput<String>?;
+      //   final currentInput = current.currentStep.inputs[FormFieldEnum.address]
+      //       as GenericInput<String>?;
+      //   return previousInput?.value != currentInput?.value ||
+      //       previousInput?.isPure != currentInput?.isPure;
+      // },
       builder: (context, state) {
-        final input = state.inputs['address'] as GenericInput<String>?;
+        final input = state.currentStep.inputs[FormFieldEnum.address]
+            as GenericInput<String>?;
         return TextFormField(
+          initialValue: input?.value,
           key: const Key('complexForm_address_textField'),
           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-            'address',
+            FormFieldEnum.address,
             value,
             [], // Optional field, no validators
           ),
@@ -458,17 +480,17 @@ class _PreferencesForm extends StatelessWidget {
 
   Widget _buildNotificationChannelField(BuildContext context) {
     return BlocBuilder<FormCubit, FormzState>(
-      buildWhen: (previous, current) {
-        final previousInput =
-            previous.inputs['notificationChannel'] as GenericInput<String>?;
-        final currentInput =
-            current.inputs['notificationChannel'] as GenericInput<String>?;
-        return previousInput?.value != currentInput?.value ||
-            previousInput?.isPure != currentInput?.isPure;
-      },
+      // buildWhen: (previous, current) {
+      //   final previousInput = previous.currentStep
+      //       .inputs[FormFieldEnum.notificationChannel] as GenericInput<String>?;
+      //   final currentInput = current.currentStep
+      //       .inputs[FormFieldEnum.notificationChannel] as GenericInput<String>?;
+      //   return previousInput?.value != currentInput?.value ||
+      //       previousInput?.isPure != currentInput?.isPure;
+      // },
       builder: (context, state) {
-        final input =
-            state.inputs['notificationChannel'] as GenericInput<String>?;
+        final input = state.currentStep
+            .inputs[FormFieldEnum.notificationChannel] as GenericInput<String>?;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -486,7 +508,7 @@ class _PreferencesForm extends StatelessWidget {
                 onChanged: (value) {
                   if (value != null) {
                     context.read<FormCubit>().updateInput<String>(
-                      'notificationChannel',
+                      FormFieldEnum.notificationChannel,
                       value,
                       [requiredValidator],
                     );
@@ -513,16 +535,17 @@ class _PreferencesForm extends StatelessWidget {
 
   Widget _buildTermsAndConditionsCheckbox() {
     return BlocBuilder<FormCubit, FormzState>(
-      buildWhen: (previous, current) {
-        final previousInput =
-            previous.inputs['termsAccepted'] as GenericInput<bool>?;
-        final currentInput =
-            current.inputs['termsAccepted'] as GenericInput<bool>?;
-        return previousInput?.value != currentInput?.value ||
-            previousInput?.isPure != currentInput?.isPure;
-      },
+      // buildWhen: (previous, current) {
+      //   final previousInput = previous.currentStep
+      //       .inputs[FormFieldEnum.termsAccepted] as GenericInput<bool>?;
+      //   final currentInput = current.currentStep
+      //       .inputs[FormFieldEnum.termsAccepted] as GenericInput<bool>?;
+      //   return previousInput?.value != currentInput?.value ||
+      //       previousInput?.isPure != currentInput?.isPure;
+      // },
       builder: (context, state) {
-        final input = state.inputs['termsAccepted'] as GenericInput<bool>?;
+        final input = state.currentStep.inputs[FormFieldEnum.termsAccepted]
+            as GenericInput<bool>?;
         final isChecked = input?.value ?? false;
 
         return Column(
@@ -533,7 +556,7 @@ class _PreferencesForm extends StatelessWidget {
               value: isChecked,
               onChanged: (value) {
                 context.read<FormCubit>().updateInput<bool>(
-                  'termsAccepted',
+                  FormFieldEnum.termsAccepted,
                   value ?? false,
                   [
                     (value) => value != true

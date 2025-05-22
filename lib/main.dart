@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:formz_example/form_field.dart';
 import 'validators.dart';
-import 'form_input.dart';
+import 'form_input_complex.dart';
 import 'complex_form_example.dart';
 
 void main() {
@@ -142,20 +143,24 @@ class _EmailInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FormCubit, FormzState>(
       buildWhen: (previous, current) {
-        final previousInput = previous.inputs['email'] as GenericInput<String>?;
-        final currentInput = current.inputs['email'] as GenericInput<String>?;
+        final previousInput = previous.currentStep.inputs[FormFieldEnum.email]
+            as GenericInput<String>?;
+        final currentInput = current.currentStep.inputs[FormFieldEnum.email]
+            as GenericInput<String>?;
         return previousInput?.value != currentInput?.value ||
             previousInput?.isPure != currentInput?.isPure;
       },
       builder: (context, state) {
-        final input = state.inputs['email'] as GenericInput<String>?;
+        final input = state.currentStep.inputs[FormFieldEnum.email]
+            as GenericInput<String>?;
         return TextFormField(
           key: const Key('formScreen_emailInput_textField'),
           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-            'email',
+            FormFieldEnum.email,
             value,
             [requiredValidator, emailValidator],
           ),
+          // initialValue: ,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             labelText: 'Email',
@@ -175,20 +180,21 @@ class _PasswordInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FormCubit, FormzState>(
       buildWhen: (previous, current) {
-        final previousInput =
-            previous.inputs['password'] as GenericInput<String>?;
-        final currentInput =
-            current.inputs['password'] as GenericInput<String>?;
+        final previousInput = previous.currentStep
+            .inputs[FormFieldEnum.password] as GenericInput<String>?;
+        final currentInput = current.currentStep.inputs[FormFieldEnum.password]
+            as GenericInput<String>?;
         return previousInput?.value != currentInput?.value ||
             previousInput?.isPure != currentInput?.isPure;
       },
       builder: (context, state) {
-        final input = state.inputs['password'] as GenericInput<String>?;
+        final input = state.currentStep.inputs[FormFieldEnum.password]
+            as GenericInput<String>?;
         return TextFormField(
           key: const Key('formScreen_passwordInput_textField'),
           onChanged: (value) {
             context.read<FormCubit>().updateInput<String>(
-              'password',
+              FormFieldEnum.password,
               value,
               [
                 requiredValidator,
@@ -198,12 +204,13 @@ class _PasswordInput extends StatelessWidget {
               ],
             );
             // If confirm password field exists, validate it again against new password
-            final confirmPassword = state.inputs['confirmPassword'];
+            final confirmPassword =
+                state.currentStep.inputs[FormFieldEnum.confirmPassword];
             if (confirmPassword != null) {
               final confirmValue =
                   (confirmPassword as GenericInput<String>).value;
               context.read<FormCubit>().updateInput<String>(
-                'confirmPassword',
+                FormFieldEnum.confirmPassword,
                 confirmValue,
                 [
                   requiredValidator,
@@ -232,21 +239,23 @@ class _ConfirmPasswordInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FormCubit, FormzState>(
       buildWhen: (previous, current) {
-        final previousInput =
-            previous.inputs['confirmPassword'] as GenericInput<String>?;
-        final currentInput =
-            current.inputs['confirmPassword'] as GenericInput<String>?;
+        final previousInput = previous.currentStep
+            .inputs[FormFieldEnum.confirmPassword] as GenericInput<String>?;
+        final currentInput = current.currentStep
+            .inputs[FormFieldEnum.confirmPassword] as GenericInput<String>?;
         return previousInput?.value != currentInput?.value ||
             previousInput?.isPure != currentInput?.isPure;
       },
       builder: (context, state) {
-        final input = state.inputs['confirmPassword'] as GenericInput<String>?;
-        final password = state.inputs['password'] as GenericInput<String>?;
+        final input = state.currentStep.inputs[FormFieldEnum.confirmPassword]
+            as GenericInput<String>?;
+        final password = state.currentStep.inputs[FormFieldEnum.password]
+            as GenericInput<String>?;
 
         return TextFormField(
           key: const Key('formScreen_confirmPasswordInput_textField'),
           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-            'confirmPassword',
+            FormFieldEnum.confirmPassword,
             value,
             [
               requiredValidator,
@@ -273,18 +282,21 @@ class _AgeInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FormCubit, FormzState>(
       buildWhen: (previous, current) {
-        final previousInput = previous.inputs['age'] as GenericInput<String>?;
-        final currentInput = current.inputs['age'] as GenericInput<String>?;
+        final previousInput = previous.currentStep.inputs[FormFieldEnum.age]
+            as GenericInput<String>?;
+        final currentInput = current.currentStep.inputs[FormFieldEnum.age]
+            as GenericInput<String>?;
         return previousInput?.value != currentInput?.value ||
             previousInput?.isPure != currentInput?.isPure;
       },
       builder: (context, state) {
-        final input = state.inputs['age'] as GenericInput<String>?;
+        final input = state.currentStep.inputs[FormFieldEnum.age]
+            as GenericInput<String>?;
 
         return TextFormField(
           key: const Key('formScreen_ageInput_textField'),
           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-            'age',
+            FormFieldEnum.age,
             value,
             [
               requiredValidator,
@@ -316,12 +328,13 @@ class _SubmitButton extends StatelessWidget {
     return BlocBuilder<FormCubit, FormzState>(
       buildWhen: (previous, current) =>
           previous.status != current.status ||
-          previous.isValid != current.isValid,
+          previous.isAllValid != current.isAllValid,
       builder: (context, state) {
         return ElevatedButton(
           key: const Key('formScreen_submit_elevatedButton'),
-          onPressed:
-              state.isValid ? () => context.read<FormCubit>().submit() : null,
+          onPressed: state.isAllValid
+              ? () => context.read<FormCubit>().submit()
+              : null,
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             shape: RoundedRectangleBorder(
