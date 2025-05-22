@@ -1,43 +1,50 @@
-/// Common form validators
-library validators;
-
-/// Validates that a field is not empty
+/// Returns an error message if the value is empty, otherwise returns null.
 String? requiredValidator(String value) =>
     value.isEmpty ? 'This field is required' : null;
 
-/// Validates that a field contains a valid email address
+/// Returns an error message if the value is not a valid email, otherwise returns null.
 String? emailValidator(String value) =>
     RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value) ? null : 'Invalid email';
 
-/// Creates a validator that ensures a string has at least the specified length
+/// Creates a validator that ensures a minimum length for a string value.
+///
+/// Returns a function that returns an error message if the value is less than
+/// the minimum length, otherwise returns null.
 String? Function(String) minLengthValidator(int minLength) {
   return (String value) =>
       value.length >= minLength ? null : 'Minimum length is $minLength';
 }
 
-/// Creates a validator that ensures a string is no longer than the specified length
-String? Function(String) maxLengthValidator(int maxLength) {
-  return (String value) =>
-      value.length <= maxLength ? null : 'Maximum length is $maxLength';
-}
+/// Creates a validator that ensures a string value contains a number.
+///
+/// Returns a function that returns an error message if the value doesn't
+/// contain a number, otherwise returns null.
+String? hasNumberValidator(String value) => RegExp(r'[0-9]').hasMatch(value)
+    ? null
+    : 'Must contain at least one number';
 
-/// Validates that a field contains only digits
-String? numericValidator(String value) =>
-    RegExp(r'^\d+$').hasMatch(value) ? null : 'Only digits are allowed';
+/// Creates a validator that ensures a string value contains a special character.
+///
+/// Returns a function that returns an error message if the value doesn't
+/// contain a special character, otherwise returns null.
+String? hasSpecialCharValidator(String value) =>
+    RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)
+        ? null
+        : 'Must contain at least one special character';
 
-/// Validates that a field contains at least one uppercase letter,
-/// one lowercase letter, one digit and one special character
-String? strongPasswordValidator(String value) {
-  if (value.isEmpty) return null;
+/// Creates a validator that ensures a number is within a valid range.
+///
+/// Returns an error message if the value is not within the range,
+/// otherwise returns null.
+String? numberRangeValidator(num value, num min, num max) =>
+    (value >= min && value <= max)
+        ? null
+        : 'Value must be between $min and $max';
 
-  final hasUppercase = RegExp(r'[A-Z]').hasMatch(value);
-  final hasLowercase = RegExp(r'[a-z]').hasMatch(value);
-  final hasDigit = RegExp(r'\d').hasMatch(value);
-  final hasSpecialChar = RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value);
-
-  if (!hasUppercase || !hasLowercase || !hasDigit || !hasSpecialChar) {
-    return 'Password must contain uppercase, lowercase, digit and special character';
-  }
-
-  return null;
+/// Creates a validator that ensures a string matches a pattern.
+///
+/// Returns a function that returns an error message if the value doesn't
+/// match the pattern, otherwise returns null.
+String? Function(String) patternValidator(RegExp pattern, String errorMessage) {
+  return (String value) => pattern.hasMatch(value) ? null : errorMessage;
 }
