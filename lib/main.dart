@@ -197,7 +197,6 @@ class _PasswordInput extends StatelessWidget {
                 hasSpecialCharValidator,
               ],
             );
-
             // If confirm password field exists, validate it again against new password
             final confirmPassword = state.inputs['confirmPassword'];
             if (confirmPassword != null) {
