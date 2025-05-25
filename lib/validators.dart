@@ -2,6 +2,13 @@
 String? requiredValidator(String value) =>
     value.isEmpty ? 'This field is required' : null;
 
+String? phoneValidator(String value) {
+  if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+    return 'Please enter a valid 10-digit phone number';
+  }
+  return null;
+}
+
 /// Returns an error message if the value is not a valid email, otherwise returns null.
 String? emailValidator(String value) =>
     RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value) ? null : 'Invalid email';

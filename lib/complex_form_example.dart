@@ -83,9 +83,11 @@ class _ComplexFormContentState extends State<_ComplexFormContent> {
                   width: 30,
                   height: 30,
                   decoration: BoxDecoration(
-                    color: isActive
-                        ? Theme.of(context).primaryColor
-                        : Colors.grey.shade300,
+                    color: state.isErroneous(stepIndex + 1)
+                        ? Colors.deepOrange
+                        : isActive
+                            ? Theme.of(context).primaryColor
+                            : Colors.grey.shade300,
                     shape: BoxShape.circle,
                   ),
                   child: Center(
@@ -401,12 +403,7 @@ class _ContactDetailsForm extends StatelessWidget {
             value,
             [
               requiredValidator,
-              (value) {
-                if (!RegExp(r'^\d{10}$').hasMatch(value)) {
-                  return 'Please enter a valid 10-digit phone number';
-                }
-                return null;
-              },
+              phoneValidator,
             ],
           ),
           keyboardType: TextInputType.phone,

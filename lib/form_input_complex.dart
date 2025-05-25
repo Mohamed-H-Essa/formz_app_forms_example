@@ -2,7 +2,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-
 import 'form_field.dart';
 
 /// Type definition for a validator function that takes a value of type T
@@ -48,12 +47,14 @@ class FormzState extends Equatable {
   final FormzStepState step3;
   final int currentStepIndex;
   final FormzSubmissionStatus status;
+  final List<int> erroneousSteps;
   const FormzState({
     required this.step1,
     required this.step2,
     required this.step3,
     required this.currentStepIndex,
     required this.status,
+    required this.erroneousSteps,
   });
 
   factory FormzState.init() {
@@ -63,6 +64,7 @@ class FormzState extends Equatable {
       step3: FormzStepState(inputs: const {}),
       currentStepIndex: 1,
       status: FormzSubmissionStatus.initial,
+      erroneousSteps: const [],
     );
   }
 
@@ -104,7 +106,8 @@ class FormzState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [step1, step2, step3, currentStepIndex, status];
+  List<Object?> get props =>
+      [step1, step2, step3, currentStepIndex, status, erroneousSteps];
   FormzState copyWith({
     FormzStepState? currentStep,
     FormzStepState? step1,
@@ -112,6 +115,7 @@ class FormzState extends Equatable {
     FormzStepState? step3,
     int? currentStepIndex,
     FormzSubmissionStatus? status,
+    List<int>? erroneousSteps,
   }) {
     return FormzState(
       // --> -> ------  => ==>  ==  <<->> <->
@@ -126,7 +130,12 @@ class FormzState extends Equatable {
           : step3 ?? this.step3,
       currentStepIndex: currentStepIndex ?? this.currentStepIndex,
       status: status ?? this.status,
+      erroneousSteps: erroneousSteps ?? this.erroneousSteps,
     );
+  }
+
+  bool isErroneous(int index) {
+    return erroneousSteps.contains(index);
   }
 
   @override
@@ -213,11 +222,13 @@ class FormCubit extends Cubit<FormzState> {
       return;
     }
 
+    emit(state.copyWith(erroneousSteps: []));
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
 
     // Simulate form submission
     Future.delayed(Duration(seconds: 1), () {
-      emit(state.copyWith(status: FormzSubmissionStatus.success));
+      emit(state.copyWith(
+          status: FormzSubmissionStatus.failure, erroneousSteps: [1, 2]));
     });
   }
 
