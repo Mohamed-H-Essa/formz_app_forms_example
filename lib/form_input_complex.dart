@@ -2,7 +2,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:formz_example/debug_extension.dart';
 
 import 'form_field.dart';
 
@@ -86,6 +85,22 @@ class FormzState extends Equatable {
     } else {
       return false;
     }
+  }
+
+  bool isPersonalInfoValid(FormzState state) {
+    return state.step1.inputs[FormFieldEnum.firstName]?.isValid == true &&
+        state.step1.inputs[FormFieldEnum.lastName]?.isValid == true &&
+        state.step1.inputs[FormFieldEnum.dob]?.isValid == true;
+  }
+
+  bool isContactDetailsValid(FormzState state) {
+    return state.step2.inputs[FormFieldEnum.email]?.isValid == true &&
+        state.step2.inputs[FormFieldEnum.phone]?.isValid == true;
+  }
+
+  bool isPreferencesValid(FormzState state) {
+    return state.step3.inputs[FormFieldEnum.notificationChannel]?.isValid ==
+        true;
   }
 
   @override
@@ -181,6 +196,14 @@ class FormCubit extends Cubit<FormzState> {
           ..[field] = input;
     emit(state.copyWith(
         currentStep: state.currentStep.copyWith(inputs: updatedInputs)));
+  }
+
+  void nextStep() {
+    emit(state.copyWith(currentStepIndex: state.currentStepIndex + 1));
+  }
+
+  void previousStep() {
+    emit(state.copyWith(currentStepIndex: state.currentStepIndex - 1));
   }
 
   /// Attempts to submit the form, updating status based on validation result

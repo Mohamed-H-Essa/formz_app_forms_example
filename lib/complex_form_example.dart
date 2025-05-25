@@ -36,91 +36,102 @@ class _ComplexFormContentState extends State<_ComplexFormContent> {
     'Contact Details',
     'Preferences',
   ];
-  int _currentSection = 0;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildStepper(),
-          const SizedBox(height: 16.0),
-          Text(
-            _formSections[_currentSection],
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          const SizedBox(height: 24.0),
-          Expanded(
-            child: SingleChildScrollView(
-              child: _buildCurrentSection(),
-            ),
-          ),
-          const SizedBox(height: 16.0),
-          _buildNavigationButtons(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStepper() {
-    return Row(
-      children: List.generate(
-        _formSections.length * 2 - 1,
-        (index) {
-          if (index.isEven) {
-            final stepIndex = index ~/ 2;
-            final isActive = stepIndex <= _currentSection;
-            final isCompleted = stepIndex < _currentSection;
-
-            return Container(
-              width: 30,
-              height: 30,
-              decoration: BoxDecoration(
-                color: isActive
-                    ? Theme.of(context).primaryColor
-                    : Colors.grey.shade300,
-                shape: BoxShape.circle,
+      child: BlocBuilder<FormCubit, FormzState>(
+        builder: (context, state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildStepper(),
+              const SizedBox(height: 16.0),
+              Text(
+                _formSections[state.currentStepIndex - 1],
+                style: Theme.of(context).textTheme.headlineSmall,
               ),
-              child: Center(
-                child: isCompleted
-                    ? const Icon(Icons.check, color: Colors.white, size: 16)
-                    : Text(
-                        '${stepIndex + 1}',
-                        style: TextStyle(
-                          color: isActive ? Colors.white : Colors.grey.shade600,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+              const SizedBox(height: 24.0),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: _buildCurrentSection(),
+                ),
               ),
-            );
-          } else {
-            return Expanded(
-              child: Container(
-                height: 2,
-                color: index < _currentSection * 2
-                    ? Theme.of(context).primaryColor
-                    : Colors.grey.shade300,
-              ),
-            );
-          }
+              const SizedBox(height: 16.0),
+              _buildNavigationButtons(),
+            ],
+          );
         },
       ),
     );
   }
 
+  Widget _buildStepper() {
+    return BlocBuilder<FormCubit, FormzState>(
+      builder: (context, state) {
+        return Row(
+          children: List.generate(
+            _formSections.length * 2 - 1,
+            (index) {
+              if (index.isEven) {
+                final stepIndex = index ~/ 2;
+                final isActive = stepIndex <= state.currentStepIndex - 1;
+                final isCompleted = stepIndex < state.currentStepIndex - 1;
+
+                return Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    color: isActive
+                        ? Theme.of(context).primaryColor
+                        : Colors.grey.shade300,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: isCompleted
+                        ? const Icon(Icons.check, color: Colors.white, size: 16)
+                        : Text(
+                            '${stepIndex + 1}',
+                            style: TextStyle(
+                              color: isActive
+                                  ? Colors.white
+                                  : Colors.grey.shade600,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                  ),
+                );
+              } else {
+                return Expanded(
+                  child: Container(
+                    height: 2,
+                    color: index < (state.currentStepIndex - 1) * 2
+                        ? Theme.of(context).primaryColor
+                        : Colors.grey.shade300,
+                  ),
+                );
+              }
+            },
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildCurrentSection() {
-    switch (_currentSection) {
-      case 0:
-        return _PersonalInformationForm();
-      case 1:
-        return _ContactDetailsForm();
-      case 2:
-        return _PreferencesForm();
-      default:
-        return const SizedBox();
-    }
+    return BlocBuilder<FormCubit, FormzState>(builder: (_, __) {
+      switch (__.currentStepIndex) {
+        case 1:
+          return _PersonalInformationForm();
+        case 2:
+          return _ContactDetailsForm();
+        case 3:
+          return _PreferencesForm();
+        default:
+          return const SizedBox();
+      }
+    });
   }
 
   Widget _buildNavigationButtons() {
@@ -138,11 +149,11 @@ class _ComplexFormContentState extends State<_ComplexFormContent> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if (_currentSection > 0)
+            if ((state.currentStepIndex - 1) > 0)
               ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    _currentSection--;
+                    context.read<FormCubit>().previousStep();
                   });
                 },
                 style: ElevatedButton.styleFrom(
@@ -153,12 +164,12 @@ class _ComplexFormContentState extends State<_ComplexFormContent> {
               )
             else
               const SizedBox(),
-            if (_currentSection < _formSections.length - 1)
+            if ((state.currentStepIndex - 1) < _formSections.length - 1)
               ElevatedButton(
                 onPressed: _validateCurrentStep()
                     ? () {
                         setState(() {
-                          _currentSection++;
+                          context.read<FormCubit>().nextStep();
                         });
                       }
                     : null,
@@ -190,32 +201,16 @@ class _ComplexFormContentState extends State<_ComplexFormContent> {
     final cubit = context.read<FormCubit>();
     final state = cubit.state;
 
-    switch (_currentSection..debug('Room201')) {
-      case 0:
-        return _isPersonalInfoValid(state);
+    switch (state.currentStepIndex) {
       case 1:
-        return _isContactDetailsValid(state);
+        return state.isPersonalInfoValid(state);
       case 2:
-        return _isPreferencesValid(state);
+        return state.isContactDetailsValid(state);
+      case 3:
+        return state.isPreferencesValid(state);
       default:
         return false;
     }
-  }
-
-  bool _isPersonalInfoValid(FormzState state) {
-    return state.step1.inputs[FormFieldEnum.firstName]?.isValid == true &&
-        state.step1.inputs[FormFieldEnum.lastName]?.isValid == true &&
-        state.step1.inputs[FormFieldEnum.dob]?.isValid == true;
-  }
-
-  bool _isContactDetailsValid(FormzState state) {
-    return state.step2.inputs[FormFieldEnum.email]?.isValid == true &&
-        state.step2.inputs[FormFieldEnum.phone]?.isValid == true;
-  }
-
-  bool _isPreferencesValid(FormzState state) {
-    return state.step3.inputs[FormFieldEnum.notificationChannel]?.isValid ==
-        true;
   }
 }
 
@@ -267,14 +262,14 @@ class _PersonalInformationForm extends StatelessWidget {
 
   Widget _buildLastNameField() {
     return BlocBuilder<FormCubit, FormzState>(
-      // buildWhen: (previous, current) {
-      //   final previousInput = previous.currentStep
-      //       .inputs[FormFieldEnum.lastName] as GenericInput<String>?;
-      //   final currentInput = current.currentStep.inputs[FormFieldEnum.lastName]
-      //       as GenericInput<String>?;
-      //   return previousInput?.value != currentInput?.value ||
-      //       previousInput?.isPure != currentInput?.isPure;
-      // },
+      buildWhen: (previous, current) {
+        final previousInput = previous.currentStep
+            .inputs[FormFieldEnum.lastName] as GenericInput<String>?;
+        final currentInput = current.currentStep.inputs[FormFieldEnum.lastName]
+            as GenericInput<String>?;
+        return previousInput?.value != currentInput?.value ||
+            previousInput?.isPure != currentInput?.isPure;
+      },
       builder: (context, state) {
         final input = state.currentStep.inputs[FormFieldEnum.lastName]
             as GenericInput<String>?;
@@ -298,14 +293,14 @@ class _PersonalInformationForm extends StatelessWidget {
 
   Widget _buildDateOfBirthField() {
     return BlocBuilder<FormCubit, FormzState>(
-      // buildWhen: (previous, current) {
-      //   final previousInput = previous.currentStep.inputs[FormFieldEnum.dob]
-      //       as GenericInput<String>?;
-      //   final currentInput = current.currentStep.inputs[FormFieldEnum.dob]
-      //       as GenericInput<String>?;
-      //   return previousInput?.value != currentInput?.value ||
-      //       previousInput?.isPure != currentInput?.isPure;
-      // },
+      buildWhen: (previous, current) {
+        final previousInput = previous.currentStep.inputs[FormFieldEnum.dob]
+            as GenericInput<String>?;
+        final currentInput = current.currentStep.inputs[FormFieldEnum.dob]
+            as GenericInput<String>?;
+        return previousInput?.value != currentInput?.value ||
+            previousInput?.isPure != currentInput?.isPure;
+      },
       builder: (context, state) {
         final input = state.currentStep.inputs[FormFieldEnum.dob]
             as GenericInput<String>?;
@@ -355,14 +350,14 @@ class _ContactDetailsForm extends StatelessWidget {
 
   Widget _buildEmailField() {
     return BlocBuilder<FormCubit, FormzState>(
-      // buildWhen: (previous, current) {
-      //   final previousInput = previous.currentStep.inputs[FormFieldEnum.email]
-      //       as GenericInput<String>?;
-      //   final currentInput = current.currentStep.inputs[FormFieldEnum.email]
-      //       as GenericInput<String>?;
-      //   return previousInput?.value != currentInput?.value ||
-      //       previousInput?.isPure != currentInput?.isPure;
-      // },
+      buildWhen: (previous, current) {
+        final previousInput = previous.currentStep.inputs[FormFieldEnum.email]
+            as GenericInput<String>?;
+        final currentInput = current.currentStep.inputs[FormFieldEnum.email]
+            as GenericInput<String>?;
+        return previousInput?.value != currentInput?.value ||
+            previousInput?.isPure != currentInput?.isPure;
+      },
       builder: (context, state) {
         final input = state.currentStep.inputs[FormFieldEnum.email]
             as GenericInput<String>?;
@@ -387,14 +382,14 @@ class _ContactDetailsForm extends StatelessWidget {
 
   Widget _buildPhoneField() {
     return BlocBuilder<FormCubit, FormzState>(
-      // buildWhen: (previous, current) {
-      //   final previousInput = previous.currentStep.inputs[FormFieldEnum.phone]
-      //       as GenericInput<String>?;
-      //   final currentInput = current.currentStep.inputs[FormFieldEnum.phone]
-      //       as GenericInput<String>?;
-      //   return previousInput?.value != currentInput?.value ||
-      //       previousInput?.isPure != currentInput?.isPure;
-      // },
+      buildWhen: (previous, current) {
+        final previousInput = previous.currentStep.inputs[FormFieldEnum.phone]
+            as GenericInput<String>?;
+        final currentInput = current.currentStep.inputs[FormFieldEnum.phone]
+            as GenericInput<String>?;
+        return previousInput?.value != currentInput?.value ||
+            previousInput?.isPure != currentInput?.isPure;
+      },
       builder: (context, state) {
         final input = state.currentStep.inputs[FormFieldEnum.phone]
             as GenericInput<String>?;
@@ -427,14 +422,14 @@ class _ContactDetailsForm extends StatelessWidget {
 
   Widget _buildAddressField() {
     return BlocBuilder<FormCubit, FormzState>(
-      // buildWhen: (previous, current) {
-      //   final previousInput = previous.currentStep.inputs[FormFieldEnum.address]
-      //       as GenericInput<String>?;
-      //   final currentInput = current.currentStep.inputs[FormFieldEnum.address]
-      //       as GenericInput<String>?;
-      //   return previousInput?.value != currentInput?.value ||
-      //       previousInput?.isPure != currentInput?.isPure;
-      // },
+      buildWhen: (previous, current) {
+        final previousInput = previous.currentStep.inputs[FormFieldEnum.address]
+            as GenericInput<String>?;
+        final currentInput = current.currentStep.inputs[FormFieldEnum.address]
+            as GenericInput<String>?;
+        return previousInput?.value != currentInput?.value ||
+            previousInput?.isPure != currentInput?.isPure;
+      },
       builder: (context, state) {
         final input = state.currentStep.inputs[FormFieldEnum.address]
             as GenericInput<String>?;
@@ -480,14 +475,14 @@ class _PreferencesForm extends StatelessWidget {
 
   Widget _buildNotificationChannelField(BuildContext context) {
     return BlocBuilder<FormCubit, FormzState>(
-      // buildWhen: (previous, current) {
-      //   final previousInput = previous.currentStep
-      //       .inputs[FormFieldEnum.notificationChannel] as GenericInput<String>?;
-      //   final currentInput = current.currentStep
-      //       .inputs[FormFieldEnum.notificationChannel] as GenericInput<String>?;
-      //   return previousInput?.value != currentInput?.value ||
-      //       previousInput?.isPure != currentInput?.isPure;
-      // },
+      buildWhen: (previous, current) {
+        final previousInput = previous.currentStep
+            .inputs[FormFieldEnum.notificationChannel] as GenericInput<String>?;
+        final currentInput = current.currentStep
+            .inputs[FormFieldEnum.notificationChannel] as GenericInput<String>?;
+        return previousInput?.value != currentInput?.value ||
+            previousInput?.isPure != currentInput?.isPure;
+      },
       builder: (context, state) {
         final input = state.currentStep
             .inputs[FormFieldEnum.notificationChannel] as GenericInput<String>?;
@@ -535,14 +530,14 @@ class _PreferencesForm extends StatelessWidget {
 
   Widget _buildTermsAndConditionsCheckbox() {
     return BlocBuilder<FormCubit, FormzState>(
-      // buildWhen: (previous, current) {
-      //   final previousInput = previous.currentStep
-      //       .inputs[FormFieldEnum.termsAccepted] as GenericInput<bool>?;
-      //   final currentInput = current.currentStep
-      //       .inputs[FormFieldEnum.termsAccepted] as GenericInput<bool>?;
-      //   return previousInput?.value != currentInput?.value ||
-      //       previousInput?.isPure != currentInput?.isPure;
-      // },
+      buildWhen: (previous, current) {
+        final previousInput = previous.currentStep
+            .inputs[FormFieldEnum.termsAccepted] as GenericInput<bool>?;
+        final currentInput = current.currentStep
+            .inputs[FormFieldEnum.termsAccepted] as GenericInput<bool>?;
+        return previousInput?.value != currentInput?.value ||
+            previousInput?.isPure != currentInput?.isPure;
+      },
       builder: (context, state) {
         final input = state.currentStep.inputs[FormFieldEnum.termsAccepted]
             as GenericInput<bool>?;
