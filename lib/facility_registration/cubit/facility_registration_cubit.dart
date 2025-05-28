@@ -1,7 +1,7 @@
 import 'package:formz/formz.dart';
 import 'package:formz_example/debug_extension.dart';
+import 'package:formz_example/facility_registration/keys/registration_input_keys.dart';
 import 'package:formz_example/shared/cubits/base_form_cubit.dart';
-import 'package:formz_example/shared/enum/form_field_enum.dart';
 import 'package:formz_example/shared/enum/input_error_enum.dart';
 import 'package:formz_example/shared/enum/ui_type_enum.dart';
 import 'package:formz_example/shared/generic_inputs/generic_input.dart';
@@ -14,19 +14,20 @@ class FacilityRegistrationFormCubit
       : super(FacilityRegistrationFormzState.init());
 
   @override
-  void updateInput<T>(FormFieldEnum field, T value) {
-    if (field == FormFieldEnum.password) {
+  void updateInput<T>(String fieldKey, T value) {
+    if (fieldKey == RegistrationInputKeys.password) {
       _updatePasswordValidator();
     }
-    super.updateInput<T>(field, value);
+    super.updateInput<T>(fieldKey, value);
   }
 
   _updatePasswordValidator() {
     final confirmPasswordInput =
-        state.currentStep.inputs[FormFieldEnum.confirmPassword];
+        state.currentStep.inputs[RegistrationInputKeys.confirmPassword];
     if (confirmPasswordInput != null) {
       final confirmValue = (confirmPasswordInput as GenericInput<String>).value;
-      final passwordInput = state.currentStep.inputs[FormFieldEnum.password];
+      final passwordInput =
+          state.currentStep.inputs[RegistrationInputKeys.password];
       final passwordValue = passwordInput != null
           ? (passwordInput as GenericInput<String>).value
           : '';
@@ -37,13 +38,14 @@ class FacilityRegistrationFormCubit
             confirm != passwordValue ? InputErrorEnum.passwordMismatch : null,
       ];
 
-      final updatedInputs = Map<FormFieldEnum, GenericInput<dynamic>>.from(
-          state.currentStep.inputs)
-        ..[FormFieldEnum.confirmPassword] = GenericInput<String>.dirty(
-          value: confirmValue,
-          validators: confirmValidators,
-          uiType: UiTypeEnum.password,
-        );
+      final updatedInputs =
+          Map<String, GenericInput<dynamic>>.from(state.currentStep.inputs)
+            ..[RegistrationInputKeys.confirmPassword] =
+                GenericInput<String>.dirty(
+              value: confirmValue,
+              validators: confirmValidators,
+              uiType: UiTypeEnum.password,
+            );
 
       emit(state.copyWith(
           currentStep: state.currentStep.copyWith(inputs: updatedInputs)));

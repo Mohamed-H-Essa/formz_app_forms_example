@@ -239,20 +239,20 @@
 //     return BlocBuilder<FormCubit, FormzState>(
 //       buildWhen: (previous, current) {
 //         final previousInput = previous.currentStep
-//             .inputs[FormFieldEnum.firstName] as GenericInput<String>?;
-//         final currentInput = current.currentStep.inputs[FormFieldEnum.firstName]
+//             .inputs[String.firstName] as GenericInput<String>?;
+//         final currentInput = current.currentStep.inputs[String.firstName]
 //             as GenericInput<String>?;
 //         return previousInput?.value != currentInput?.value ||
 //             previousInput?.isPure != currentInput?.isPure;
 //       },
 //       builder: (context, state) {
-//         final input = state.currentStep.inputs[FormFieldEnum.firstName]
+//         final input = state.currentStep.inputs[String.firstName]
 //             as GenericInput<String>?;
 //         return TextFormField(
 //           initialValue: input?.value,
 //           key: const Key('complexForm_firstName_textField'),
 //           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-//                 FormFieldEnum.firstName,
+//                 String.firstName,
 //                 value,
 //               ),
 //           decoration: InputDecoration(
@@ -269,20 +269,20 @@
 //     return BlocBuilder<FormCubit, FormzState>(
 //       buildWhen: (previous, current) {
 //         final previousInput = previous.currentStep
-//             .inputs[FormFieldEnum.lastName] as GenericInput<String>?;
-//         final currentInput = current.currentStep.inputs[FormFieldEnum.lastName]
+//             .inputs[String.lastName] as GenericInput<String>?;
+//         final currentInput = current.currentStep.inputs[String.lastName]
 //             as GenericInput<String>?;
 //         return previousInput?.value != currentInput?.value ||
 //             previousInput?.isPure != currentInput?.isPure;
 //       },
 //       builder: (context, state) {
-//         final input = state.currentStep.inputs[FormFieldEnum.lastName]
+//         final input = state.currentStep.inputs[String.lastName]
 //             as GenericInput<String>?;
 //         return TextFormField(
 //           initialValue: input?.value,
 //           key: const Key('complexForm_lastName_textField'),
 //           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-//                 FormFieldEnum.lastName,
+//                 String.lastName,
 //                 value,
 //               ),
 //           decoration: InputDecoration(
@@ -298,21 +298,21 @@
 //   Widget _buildDateOfBirthField() {
 //     return BlocBuilder<FormCubit, FormzState>(
 //       buildWhen: (previous, current) {
-//         final previousInput = previous.currentStep.inputs[FormFieldEnum.dob]
+//         final previousInput = previous.currentStep.inputs[String.dob]
 //             as GenericInput<String>?;
-//         final currentInput = current.currentStep.inputs[FormFieldEnum.dob]
+//         final currentInput = current.currentStep.inputs[String.dob]
 //             as GenericInput<String>?;
 //         return previousInput?.value != currentInput?.value ||
 //             previousInput?.isPure != currentInput?.isPure;
 //       },
 //       builder: (context, state) {
-//         final input = state.currentStep.inputs[FormFieldEnum.dob]
+//         final input = state.currentStep.inputs[String.dob]
 //             as GenericInput<String>?;
 //         return TextFormField(
 //           initialValue: input?.value,
 //           key: const Key('complexForm_dob_textField'),
 //           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-//                 FormFieldEnum.dob,
+//                 String.dob,
 //                 value,
 //               ),
 //           decoration: InputDecoration(
@@ -344,21 +344,21 @@
 //   Widget _buildEmailField() {
 //     return BlocBuilder<FormCubit, FormzState>(
 //       buildWhen: (previous, current) {
-//         final previousInput = previous.currentStep.inputs[FormFieldEnum.email]
+//         final previousInput = previous.currentStep.inputs[String.email]
 //             as GenericInput<String>?;
-//         final currentInput = current.currentStep.inputs[FormFieldEnum.email]
+//         final currentInput = current.currentStep.inputs[String.email]
 //             as GenericInput<String>?;
 //         return previousInput?.value != currentInput?.value ||
 //             previousInput?.isPure != currentInput?.isPure;
 //       },
 //       builder: (context, state) {
-//         final input = state.currentStep.inputs[FormFieldEnum.email]
+//         final input = state.currentStep.inputs[String.email]
 //             as GenericInput<String>?;
 //         return TextFormField(
 //           key: const Key('complexForm_email_textField'),
 //           initialValue: input?.value,
 //           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-//                 FormFieldEnum.email,
+//                 String.email,
 //                 value,
 //               ),
 //           keyboardType: TextInputType.emailAddress,
@@ -375,21 +375,21 @@
 //   Widget _buildPhoneField() {
 //     return BlocBuilder<FormCubit, FormzState>(
 //       buildWhen: (previous, current) {
-//         final previousInput = previous.currentStep.inputs[FormFieldEnum.phone]
+//         final previousInput = previous.currentStep.inputs[String.phone]
 //             as GenericInput<String>?;
-//         final currentInput = current.currentStep.inputs[FormFieldEnum.phone]
+//         final currentInput = current.currentStep.inputs[String.phone]
 //             as GenericInput<String>?;
 //         return previousInput?.value != currentInput?.value ||
 //             previousInput?.isPure != currentInput?.isPure;
 //       },
 //       builder: (context, state) {
-//         final input = state.currentStep.inputs[FormFieldEnum.phone]
+//         final input = state.currentStep.inputs[String.phone]
 //             as GenericInput<String>?;
 //         return TextFormField(
 //           initialValue: input?.value,
 //           key: const Key('complexForm_phone_textField'),
 //           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-//                 FormFieldEnum.phone,
+//                 String.phone,
 //                 value,
 //               ),
 //           keyboardType: TextInputType.phone,
@@ -406,21 +406,21 @@
 //   Widget _buildAddressField() {
 //     return BlocBuilder<FormCubit, FormzState>(
 //       buildWhen: (previous, current) {
-//         final previousInput = previous.currentStep.inputs[FormFieldEnum.address]
+//         final previousInput = previous.currentStep.inputs[String.address]
 //             as GenericInput<String>?;
-//         final currentInput = current.currentStep.inputs[FormFieldEnum.address]
+//         final currentInput = current.currentStep.inputs[String.address]
 //             as GenericInput<String>?;
 //         return previousInput?.value != currentInput?.value ||
 //             previousInput?.isPure != currentInput?.isPure;
 //       },
 //       builder: (context, state) {
-//         final input = state.currentStep.inputs[FormFieldEnum.address]
+//         final input = state.currentStep.inputs[String.address]
 //             as GenericInput<String>?;
 //         return TextFormField(
 //           initialValue: input?.value,
 //           key: const Key('complexForm_address_textField'),
 //           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-//                 FormFieldEnum.address,
+//                 String.address,
 //                 value,
 //               ),
 //           maxLines: 3,
@@ -459,15 +459,15 @@
 //     return BlocBuilder<FormCubit, FormzState>(
 //       buildWhen: (previous, current) {
 //         final previousInput = previous.currentStep
-//             .inputs[FormFieldEnum.notificationChannel] as GenericInput<String>?;
+//             .inputs[String.notificationChannel] as GenericInput<String>?;
 //         final currentInput = current.currentStep
-//             .inputs[FormFieldEnum.notificationChannel] as GenericInput<String>?;
+//             .inputs[String.notificationChannel] as GenericInput<String>?;
 //         return previousInput?.value != currentInput?.value ||
 //             previousInput?.isPure != currentInput?.isPure;
 //       },
 //       builder: (context, state) {
 //         final input = state.currentStep
-//             .inputs[FormFieldEnum.notificationChannel] as GenericInput<String>?;
+//             .inputs[String.notificationChannel] as GenericInput<String>?;
 //         return Column(
 //           crossAxisAlignment: CrossAxisAlignment.start,
 //           children: [
@@ -486,7 +486,7 @@
 //                   if (value != null) {
 //                     'ui clicked'.debug();
 //                     context.read<FormCubit>().updateInput<String>(
-//                           FormFieldEnum.notificationChannel,
+//                           String.notificationChannel,
 //                           value..debug('UI clicked: '),
 //                         );
 //                   }
@@ -514,14 +514,14 @@
 //     return BlocBuilder<FormCubit, FormzState>(
 //       buildWhen: (previous, current) {
 //         final previousInput = previous.currentStep
-//             .inputs[FormFieldEnum.termsAccepted] as GenericInput<bool>?;
+//             .inputs[String.termsAccepted] as GenericInput<bool>?;
 //         final currentInput = current.currentStep
-//             .inputs[FormFieldEnum.termsAccepted] as GenericInput<bool>?;
+//             .inputs[String.termsAccepted] as GenericInput<bool>?;
 //         return previousInput?.value != currentInput?.value ||
 //             previousInput?.isPure != currentInput?.isPure;
 //       },
 //       builder: (context, state) {
-//         final input = state.currentStep.inputs[FormFieldEnum.termsAccepted]
+//         final input = state.currentStep.inputs[String.termsAccepted]
 //             as GenericInput<bool>?;
 //         final isChecked = input?.value ?? false;
 
@@ -533,7 +533,7 @@
 //               value: isChecked,
 //               onChanged: (value) {
 //                 context.read<FormCubit>().updateInput<bool>(
-//                       FormFieldEnum.termsAccepted,
+//                       String.termsAccepted,
 //                       value ?? false,
 //                     );
 //               },
@@ -563,7 +563,7 @@
 //     super.key,
 //     required this.formMap,
 //   });
-//   final Map<FormFieldEnum, FormzInput> formMap;
+//   final Map<String, FormzInput> formMap;
 
 //   @override
 //   Widget build(BuildContext context) {
@@ -597,29 +597,29 @@
 //   }
 
 //   Widget _buildFieldWidget(
-//       BuildContext context, FormzState state, FormFieldEnum fieldEnum) {
+//       BuildContext context, FormzState state, String fieldEnum) {
 //     switch (fieldEnum) {
-//       case FormFieldEnum.email:
+//       case String.email:
 //         return _buildEmailField(context, state, fieldEnum);
-//       case FormFieldEnum.password:
+//       case String.password:
 //         return _buildPasswordField(context, state, fieldEnum);
-//       case FormFieldEnum.confirmPassword:
+//       case String.confirmPassword:
 //         return _buildConfirmPasswordField(context, state, fieldEnum);
-//       case FormFieldEnum.age:
+//       case String.age:
 //         return _buildAgeField(context, state, fieldEnum);
-//       case FormFieldEnum.firstName:
+//       case String.firstName:
 //         return _buildFirstNameField(context, state, fieldEnum);
-//       case FormFieldEnum.lastName:
+//       case String.lastName:
 //         return _buildLastNameField(context, state, fieldEnum);
-//       case FormFieldEnum.dob:
+//       case String.dob:
 //         return _buildDateOfBirthField(context, state, fieldEnum);
-//       case FormFieldEnum.phone:
+//       case String.phone:
 //         return _buildPhoneField(context, state, fieldEnum);
-//       case FormFieldEnum.address:
+//       case String.address:
 //         return _buildAddressField(context, state, fieldEnum);
-//       case FormFieldEnum.notificationChannel:
+//       case String.notificationChannel:
 //         return _buildNotificationChannelField(context, state, fieldEnum);
-//       case FormFieldEnum.termsAccepted:
+//       case String.termsAccepted:
 //         return _buildTermsField(context, state, fieldEnum);
 //       default:
 //         return _buildGenericTextField(context, state, fieldEnum);
@@ -627,7 +627,7 @@
 //   }
 
 //   Widget _buildEmailField(
-//       BuildContext context, FormzState state, FormFieldEnum fieldEnum) {
+//       BuildContext context, FormzState state, String fieldEnum) {
 //     final input = state.currentStep.inputs[fieldEnum] as GenericInput<String>?;
 //     return TextFormField(
 //       initialValue: input?.value,
@@ -646,7 +646,7 @@
 //   }
 
 //   Widget _buildPasswordField(
-//       BuildContext context, FormzState state, FormFieldEnum fieldEnum) {
+//       BuildContext context, FormzState state, String fieldEnum) {
 //     final input = state.currentStep.inputs[fieldEnum] as GenericInput<String>?;
 //     return TextFormField(
 //       initialValue: input?.value,
@@ -665,7 +665,7 @@
 //   }
 
 //   Widget _buildConfirmPasswordField(
-//       BuildContext context, FormzState state, FormFieldEnum fieldEnum) {
+//       BuildContext context, FormzState state, String fieldEnum) {
 //     final input = state.currentStep.inputs[fieldEnum] as GenericInput<String>?;
 //     return TextFormField(
 //       initialValue: input?.value,
@@ -684,7 +684,7 @@
 //   }
 
 //   Widget _buildAgeField(
-//       BuildContext context, FormzState state, FormFieldEnum fieldEnum) {
+//       BuildContext context, FormzState state, String fieldEnum) {
 //     final input = state.currentStep.inputs[fieldEnum] as GenericInput<String>?;
 //     return TextFormField(
 //       initialValue: input?.value,
@@ -705,7 +705,7 @@
 //   }
 
 //   Widget _buildFirstNameField(
-//       BuildContext context, FormzState state, FormFieldEnum fieldEnum) {
+//       BuildContext context, FormzState state, String fieldEnum) {
 //     final input = state.currentStep.inputs[fieldEnum] as GenericInput<String>?;
 //     return TextFormField(
 //       initialValue: input?.value,
@@ -723,7 +723,7 @@
 //   }
 
 //   Widget _buildLastNameField(
-//       BuildContext context, FormzState state, FormFieldEnum fieldEnum) {
+//       BuildContext context, FormzState state, String fieldEnum) {
 //     final input = state.currentStep.inputs[fieldEnum] as GenericInput<String>?;
 //     return TextFormField(
 //       initialValue: input?.value,
@@ -741,7 +741,7 @@
 //   }
 
 //   Widget _buildDateOfBirthField(
-//       BuildContext context, FormzState state, FormFieldEnum fieldEnum) {
+//       BuildContext context, FormzState state, String fieldEnum) {
 //     final input = state.currentStep.inputs[fieldEnum] as GenericInput<String>?;
 //     return TextFormField(
 //       initialValue: input?.value,
@@ -759,7 +759,7 @@
 //   }
 
 //   Widget _buildPhoneField(
-//       BuildContext context, FormzState state, FormFieldEnum fieldEnum) {
+//       BuildContext context, FormzState state, String fieldEnum) {
 //     final input = state.currentStep.inputs[fieldEnum] as GenericInput<String>?;
 //     return TextFormField(
 //       initialValue: input?.value,
@@ -778,7 +778,7 @@
 //   }
 
 //   Widget _buildAddressField(
-//       BuildContext context, FormzState state, FormFieldEnum fieldEnum) {
+//       BuildContext context, FormzState state, String fieldEnum) {
 //     final input = state.currentStep.inputs[fieldEnum] as GenericInput<String>?;
 //     return TextFormField(
 //       initialValue: input?.value,
@@ -797,7 +797,7 @@
 //   }
 
 //   Widget _buildNotificationChannelField(
-//       BuildContext context, FormzState state, FormFieldEnum fieldEnum) {
+//       BuildContext context, FormzState state, String fieldEnum) {
 //     final input = state.currentStep.inputs[fieldEnum] as GenericInput<String>?;
 //     final notificationOptions = ['Email', 'SMS', 'Push Notification', 'None'];
 
@@ -841,7 +841,7 @@
 //   }
 
 //   Widget _buildTermsField(
-//       BuildContext context, FormzState state, FormFieldEnum fieldEnum) {
+//       BuildContext context, FormzState state, String fieldEnum) {
 //     final input = state.currentStep.inputs[fieldEnum] as GenericInput<bool>?;
 //     final isChecked = input?.value ?? false;
 
@@ -875,7 +875,7 @@
 //   }
 
 //   Widget _buildGenericTextField(
-//       BuildContext context, FormzState state, FormFieldEnum fieldEnum) {
+//       BuildContext context, FormzState state, String fieldEnum) {
 //     final input = state.currentStep.inputs[fieldEnum] as GenericInput<String>?;
 //     return TextFormField(
 //       initialValue: input?.value,
@@ -892,29 +892,29 @@
 //     );
 //   }
 
-//   String _getFieldLabel(FormFieldEnum fieldEnum) {
+//   String _getFieldLabel(String fieldEnum) {
 //     switch (fieldEnum) {
-//       case FormFieldEnum.email:
+//       case String.email:
 //         return 'Email';
-//       case FormFieldEnum.password:
+//       case String.password:
 //         return 'Password';
-//       case FormFieldEnum.confirmPassword:
+//       case String.confirmPassword:
 //         return 'Confirm Password';
-//       case FormFieldEnum.age:
+//       case String.age:
 //         return 'Age';
-//       case FormFieldEnum.firstName:
+//       case String.firstName:
 //         return 'First Name';
-//       case FormFieldEnum.lastName:
+//       case String.lastName:
 //         return 'Last Name';
-//       case FormFieldEnum.dob:
+//       case String.dob:
 //         return 'Date of Birth';
-//       case FormFieldEnum.phone:
+//       case String.phone:
 //         return 'Phone';
-//       case FormFieldEnum.address:
+//       case String.address:
 //         return 'Address';
-//       case FormFieldEnum.notificationChannel:
+//       case String.notificationChannel:
 //         return 'Notification Channel';
-//       case FormFieldEnum.termsAccepted:
+//       case String.termsAccepted:
 //         return 'Terms Accepted';
 //     }
 //   }

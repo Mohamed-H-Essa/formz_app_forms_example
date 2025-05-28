@@ -75,14 +75,14 @@
 //   }
 
 //   /// Initialize Step 1 (Personal Information) with predefined fields and validators
-//   static Map<FormFieldEnum, FormzInput> _initStep1Inputs() {
+//   static Map<String, FormzInput> _initStep1Inputs() {
 //     return {
 //       // Basic form fields
-//       // FormFieldEnum.email: GenericInput<String>.pure(
+//       // String.email: GenericInput<String>.pure(
 //       //   value: '',
 //       //   validators: [requiredValidator, emailValidator],
 //       // ),
-//       // FormFieldEnum.password: GenericInput<String>.pure(
+//       // String.password: GenericInput<String>.pure(
 //       //   value: '',
 //       //   validators: [
 //       //     requiredValidator,
@@ -91,11 +91,11 @@
 //       //     hasSpecialCharValidator,
 //       //   ],
 //       // ),
-//       // FormFieldEnum.confirmPassword: GenericInput<String>.pure(
+//       // String.confirmPassword: GenericInput<String>.pure(
 //       //   value: '',
 //       //   validators: [requiredValidator, _confirmPasswordValidator],
 //       // ),
-//       // FormFieldEnum.age: GenericInput<String>.pure(
+//       // String.age: GenericInput<String>.pure(
 //       //   value: '20',
 //       //   validators: [
 //       //     requiredValidator,
@@ -103,15 +103,15 @@
 //       //   ],
 //       // ),
 //       // Complex form fields
-//       FormFieldEnum.firstName: GenericInput<String>.pure(
+//       String.firstName: GenericInput<String>.pure(
 //         value: '',
 //         validators: [requiredValidator],
 //       ),
-//       FormFieldEnum.lastName: GenericInput<String>.pure(
+//       String.lastName: GenericInput<String>.pure(
 //         value: '',
 //         validators: [requiredValidator],
 //       ),
-//       FormFieldEnum.dob: GenericInput<String>.pure(
+//       String.dob: GenericInput<String>.pure(
 //         value: '',
 //         validators: [
 //           requiredValidator,
@@ -122,17 +122,17 @@
 //   }
 
 //   /// Initialize Step 2 (Contact Details) with predefined fields and validators
-//   static Map<FormFieldEnum, FormzInput> _initStep2Inputs() {
+//   static Map<String, FormzInput> _initStep2Inputs() {
 //     return {
-//       FormFieldEnum.email: GenericInput<String>.pure(
+//       String.email: GenericInput<String>.pure(
 //         value: '',
 //         validators: [requiredValidator, emailValidator],
 //       ),
-//       FormFieldEnum.phone: GenericInput<String>.pure(
+//       String.phone: GenericInput<String>.pure(
 //         value: '',
 //         validators: [requiredValidator, phoneValidator],
 //       ),
-//       FormFieldEnum.address: GenericInput<String>.pure(
+//       String.address: GenericInput<String>.pure(
 //         value: '',
 //         validators: [], // Optional field, no validators
 //       ),
@@ -140,13 +140,13 @@
 //   }
 
 //   /// Initialize Step 3 (Preferences) with predefined fields and validators
-//   static Map<FormFieldEnum, FormzInput> _initStep3Inputs() {
+//   static Map<String, FormzInput> _initStep3Inputs() {
 //     return {
-//       FormFieldEnum.notificationChannel: GenericInput<String>.pure(
+//       String.notificationChannel: GenericInput<String>.pure(
 //         value: '',
 //         validators: [requiredValidator],
 //       ),
-//       FormFieldEnum.termsAccepted: GenericInput<bool>.pure(
+//       String.termsAccepted: GenericInput<bool>.pure(
 //         value: false,
 //         validators: [_termsValidator],
 //       ),
@@ -208,19 +208,19 @@
 //   }
 
 //   bool isPersonalInfoValid(FormzState state) {
-//     return state.steps[0].inputs[FormFieldEnum.firstName]?.isValid == true &&
-//         state.steps[0].inputs[FormFieldEnum.lastName]?.isValid == true &&
-//         state.steps[0].inputs[FormFieldEnum.dob]?.isValid == true;
+//     return state.steps[0].inputs[String.firstName]?.isValid == true &&
+//         state.steps[0].inputs[String.lastName]?.isValid == true &&
+//         state.steps[0].inputs[String.dob]?.isValid == true;
 //   }
 
 //   bool isContactDetailsValid(FormzState state) {
-//     return state.steps[1].inputs[FormFieldEnum.email]?.isValid == true &&
-//         state.steps[1].inputs[FormFieldEnum.phone]?.isValid == true;
+//     return state.steps[1].inputs[String.email]?.isValid == true &&
+//         state.steps[1].inputs[String.phone]?.isValid == true;
 //   }
 
 //   bool isPreferencesValid(FormzState state) {
 //     'isPreferencesValid : '.debug();
-//     return (state.steps[2].inputs[FormFieldEnum.notificationChannel]?.isValid ==
+//     return (state.steps[2].inputs[String.notificationChannel]?.isValid ==
 //         true)
 //       ..debug('isPreferencesValid : ');
 //   }
@@ -260,8 +260,8 @@
 // // class FormzStepState extends Equatable {
 // //   final String stepId;
 
-// //   /// Map of form inputs, keyed by FormFieldEnum enum values
-// //   final Map<FormFieldEnum, FormzInput> inputs;
+// //   /// Map of form inputs, keyed by String enum values
+// //   final Map<String, FormzInput> inputs;
 // //   final String? errorMessage;
 
 // //   /// Optional function to convert form inputs to a JSON structure for API validation
@@ -302,7 +302,7 @@
 // //   /// [status] - New submission status (optional)
 // //   FormzStepState copyWith({
 // //     String? stepId,
-// //     Map<FormFieldEnum, FormzInput>? inputs,
+// //     Map<String, FormzInput>? inputs,
 // //     FormzSubmissionStatus? status,
 // //     ValueGetter<Map<String, dynamic> Function()?>? apiJsonValidator,
 // //     ValueGetter<String?>? errorMessage,
@@ -333,9 +333,9 @@
 
 //   /// Updates a form input with a new value using the predefined validators
 //   ///
-//   /// [field] - The FormFieldEnum enum value identifying the form field
+//   /// [field] - The String enum value identifying the form field
 //   /// [value] - The new value for the field
-//   void updateInput<T>(FormFieldEnum field, T value) {
+//   void updateInput<T>(String field, T value) {
 //     final existingInput = state.currentStep.inputs[field];
 //     if (existingInput == null) return; // Field doesn't exist in current step
 
@@ -343,13 +343,13 @@
 //     final input = GenericInput<T>.dirty(value: value, validators: validators);
 
 //     final updatedInputs =
-//         Map<FormFieldEnum, FormzInput>.from(state.currentStep.inputs)
+//         Map<String, FormzInput>.from(state.currentStep.inputs)
 //           ..[field] = input;
 
 //     // Special handling for password field - update confirm password validation
-//     if (field == FormFieldEnum.password) {
+//     if (field == String.password) {
 //       final confirmPasswordInput =
-//           state.currentStep.inputs[FormFieldEnum.confirmPassword];
+//           state.currentStep.inputs[String.confirmPassword];
 //       if (confirmPasswordInput != null) {
 //         final confirmValue =
 //             (confirmPasswordInput as GenericInput<String>).value;
@@ -358,7 +358,7 @@
 //           (String confirm) =>
 //               confirm != value ? 'Passwords do not match' : null,
 //         ];
-//         updatedInputs[FormFieldEnum.confirmPassword] =
+//         updatedInputs[String.confirmPassword] =
 //             GenericInput<String>.dirty(
 //           value: confirmValue,
 //           validators: confirmValidators,

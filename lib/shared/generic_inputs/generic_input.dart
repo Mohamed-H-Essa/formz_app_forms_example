@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:formz/formz.dart';
 import 'package:formz_example/debug_extension.dart';
 import 'package:formz_example/shared/enum/input_error_enum.dart';
@@ -7,12 +8,13 @@ import 'package:formz_example/shared/validators/validator_type.dart';
 class GenericInput<T> extends FormzInput<T, InputErrorEnum> {
   /// List of validator functions to apply to the input value
   final String id;
+  final String? label;
   final List<Validator<T>> validators;
   final String? toJsonKey;
   final String? fromJsonKey;
+  final UiTypeEnum uiType;
   final Map<String, dynamic> Function()? _customToJson;
   final GenericInput<T> Function(Map m)? fromJson;
-  final UiTypeEnum uiType;
 
   Map<String, dynamic> get toJson {
     // if (_customToJson == null) {
@@ -29,6 +31,7 @@ class GenericInput<T> extends FormzInput<T, InputErrorEnum> {
   /// [value] - Initial value of the input
   const GenericInput.pure({
     this.id = '',
+    this.label,
     required this.validators,
     required T value,
     required this.uiType,
@@ -51,6 +54,7 @@ class GenericInput<T> extends FormzInput<T, InputErrorEnum> {
   /// [value] - Current value of the input
   const GenericInput.dirty({
     this.id = '',
+    this.label,
     required this.validators,
     required T value,
     required this.uiType,
@@ -63,7 +67,6 @@ class GenericInput<T> extends FormzInput<T, InputErrorEnum> {
 
   @override
   InputErrorEnum? validator(T value) {
-    'String? validator'.debug();
     for (final validate in validators) {
       final error = validate(value);
       if (error != null) return error;
@@ -74,6 +77,7 @@ class GenericInput<T> extends FormzInput<T, InputErrorEnum> {
   /// Creates a copy of this [GenericInput] with the given fields replaced with the new values
   GenericInput<T> copyWith({
     String? id,
+    ValueGetter<String?>? label,
     List<Validator<T>>? validators,
     T? value,
     String? toJsonKey,
@@ -84,6 +88,7 @@ class GenericInput<T> extends FormzInput<T, InputErrorEnum> {
       return GenericInput.pure(
         id: id ?? this.id,
         validators: validators ?? this.validators,
+        label: label != null ? label() : this.label,
         uiType: uiType ?? this.uiType,
         value: value ?? this.value,
         toJsonKey: toJsonKey ?? this.toJsonKey,
@@ -93,11 +98,23 @@ class GenericInput<T> extends FormzInput<T, InputErrorEnum> {
       return GenericInput.dirty(
         id: id ?? this.id,
         validators: validators ?? this.validators,
+        label: label != null ? label() : this.label,
         uiType: uiType ?? this.uiType,
         value: value ?? this.value,
         toJsonKey: toJsonKey ?? this.toJsonKey,
         fromJsonKey: fromJsonKey ?? this.fromJsonKey,
       );
     }
+  }
+
+  int get customHash {
+    return Object.hash(
+      id,
+      label,
+      validators,
+      toJsonKey,
+      fromJsonKey,
+      uiType,
+    );
   }
 }

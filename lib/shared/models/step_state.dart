@@ -1,14 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:formz/formz.dart';
-import 'package:formz_example/shared/enum/form_field_enum.dart';
 import 'package:formz_example/shared/generic_inputs/generic_input.dart';
 
 abstract class FormzStepBaseState extends Equatable {
   final String stepId;
 
-  /// Map of form inputs, keyed by FormFieldEnum enum values
-  final Map<FormFieldEnum, GenericInput> inputs;
+  /// Map of form inputs, keyed by String enum values
+  final Map<String, GenericInput> inputs;
   final String? errorMessage;
 
   /// Optional function to convert form inputs to a JSON structure for API validation
@@ -60,7 +59,7 @@ abstract class FormzStepBaseState extends Equatable {
   /// [errorMessage] - New error message (optional)
   FormzStepBaseState copyWith({
     String? stepId,
-    Map<FormFieldEnum, GenericInput>? inputs,
+    Map<String, GenericInput>? inputs,
     FormzSubmissionStatus? status,
     ValueGetter<Map<String, dynamic> Function()?>? apiJsonValidator,
     String? errorMessage,

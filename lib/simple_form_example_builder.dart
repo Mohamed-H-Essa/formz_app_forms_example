@@ -144,7 +144,7 @@
 //     );
 //   }
 
-//   Widget _buildFieldWidget(FormFieldEnum field, FormzInput input) {
+//   Widget _buildFieldWidget(String field, FormzInput input) {
 //     return BlocBuilder<FormCubit, FormzState>(
 //       buildWhen: (previous, current) {
 //         final prevInput = previous.currentStep.inputs[field];
@@ -165,7 +165,7 @@
 //   }
 
 //   Widget _buildTextFormField(
-//       BuildContext context, FormFieldEnum field, GenericInput<String> input) {
+//       BuildContext context, String field, GenericInput<String> input) {
 //     final fieldConfig = _getFieldConfig(field);
 
 //     return TextFormField(
@@ -192,10 +192,10 @@
 //   }
 
 //   Widget _buildBooleanField(
-//       BuildContext context, FormFieldEnum field, GenericInput<bool> input) {
+//       BuildContext context, String field, GenericInput<bool> input) {
 //     final fieldConfig = _getFieldConfig(field);
 
-//     if (field == FormFieldEnum.termsAccepted) {
+//     if (field == String.termsAccepted) {
 //       return Column(
 //         crossAxisAlignment: CrossAxisAlignment.start,
 //         children: [
@@ -224,7 +224,7 @@
 //     }
 
 //     // Handle radio buttons for notification channel
-//     if (field == FormFieldEnum.notificationChannel) {
+//     if (field == String.notificationChannel) {
 //       final options = ['Email', 'SMS', 'Push Notification', 'None'];
 //       return Column(
 //         crossAxisAlignment: CrossAxisAlignment.start,
@@ -355,16 +355,16 @@
 //     }
 //   }
 
-//   _FieldConfig _getFieldConfig(FormFieldEnum field) {
+//   _FieldConfig _getFieldConfig(String field) {
 //     switch (field) {
-//       case FormFieldEnum.email:
+//       case String.email:
 //         return _FieldConfig(
 //           label: 'Email Address',
 //           helperText: 'Enter a valid email address',
 //           keyboardType: TextInputType.emailAddress,
 //           icon: Icons.email,
 //         );
-//       case FormFieldEnum.password:
+//       case String.password:
 //         return _FieldConfig(
 //           label: 'Password',
 //           helperText:
@@ -372,56 +372,56 @@
 //           isPassword: true,
 //           icon: Icons.lock,
 //         );
-//       case FormFieldEnum.confirmPassword:
+//       case String.confirmPassword:
 //         return _FieldConfig(
 //           label: 'Confirm Password',
 //           helperText: 'Re-enter your password',
 //           isPassword: true,
 //           icon: Icons.lock_outline,
 //         );
-//       case FormFieldEnum.age:
+//       case String.age:
 //         return _FieldConfig(
 //           label: 'Age',
 //           helperText: 'Must be between 18 and 120',
 //           keyboardType: TextInputType.number,
 //           icon: Icons.cake,
 //         );
-//       case FormFieldEnum.firstName:
+//       case String.firstName:
 //         return _FieldConfig(
 //           label: 'First Name',
 //           icon: Icons.person,
 //         );
-//       case FormFieldEnum.lastName:
+//       case String.lastName:
 //         return _FieldConfig(
 //           label: 'Last Name',
 //           icon: Icons.person_outline,
 //         );
-//       case FormFieldEnum.dob:
+//       case String.dob:
 //         return _FieldConfig(
 //           label: 'Date of Birth',
 //           helperText: 'Format: DD/MM/YYYY',
 //           icon: Icons.calendar_today,
 //         );
-//       case FormFieldEnum.phone:
+//       case String.phone:
 //         return _FieldConfig(
 //           label: 'Phone Number',
 //           helperText: 'Enter 10 digits',
 //           keyboardType: TextInputType.phone,
 //           icon: Icons.phone,
 //         );
-//       case FormFieldEnum.address:
+//       case String.address:
 //         return _FieldConfig(
 //           label: 'Address (Optional)',
 //           helperText: 'Your complete address',
 //           maxLines: 3,
 //           icon: Icons.location_on,
 //         );
-//       case FormFieldEnum.notificationChannel:
+//       case String.notificationChannel:
 //         return _FieldConfig(
 //           label: 'Preferred Notification Channel',
 //           helperText: 'How would you like to receive notifications?',
 //         );
-//       case FormFieldEnum.termsAccepted:
+//       case String.termsAccepted:
 //         return _FieldConfig(
 //           label: 'I accept the Terms and Conditions',
 //         );

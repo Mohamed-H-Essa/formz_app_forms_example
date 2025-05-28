@@ -2,8 +2,8 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:formz/formz.dart';
-import 'package:formz_example/debug_extension.dart';
-import 'package:formz_example/shared/enum/form_field_enum.dart';
+import 'package:formz_example/facility_registration/facility_plugin/facility_plugin.dart';
+import 'package:formz_example/facility_registration/keys/registration_input_keys.dart';
 import 'package:formz_example/shared/enum/ui_type_enum.dart';
 import 'package:formz_example/shared/generic_inputs/generic_input.dart';
 import 'package:formz_example/shared/models/formz_state.dart';
@@ -22,13 +22,14 @@ class FacilityRegistrationFormzState<StepState extends FormzStepBaseState>
   @override
   factory FacilityRegistrationFormzState.init() {
     return FacilityRegistrationFormzState(
-      steps: [
-        CustomStep1(stepId: 'step1', inputs: _initStep1Inputs()) as StepState,
-        FormzStepState(stepId: 'step2', inputs: _initStep2Inputs())
-            as StepState,
-        FormzStepState(stepId: 'step3', inputs: _initStep3Inputs())
-            as StepState,
-      ],
+      steps: facilitySteps as List<StepState>,
+      // steps: [
+      //   CustomStep1(stepId: 'step1', inputs: _initStep1Inputs()) as StepState,
+      //   FormzStepState(stepId: 'step2', inputs: _initStep2Inputs())
+      //       as StepState,
+      //   FormzStepState(stepId: 'step3', inputs: _initStep3Inputs())
+      //       as StepState,
+      // ],
       currentStepIndex: 0,
       status: FormzSubmissionStatus.initial,
       erroneousSteps: const [],
@@ -36,123 +37,25 @@ class FacilityRegistrationFormzState<StepState extends FormzStepBaseState>
   }
 
   /// Initialize Step 1 (Personal Information) with predefined fields and validators
-  static Map<FormFieldEnum, GenericInput> _initStep1Inputs() {
-    return {
-      FormFieldEnum.firstName: const GenericInput<String>.pure(
-        value: '',
-        validators: [requiredValidator],
-        uiType: UiTypeEnum.simpleTextField,
-      ),
-      FormFieldEnum.lastName: const GenericInput<String>.pure(
-        value: 'first',
-        validators: [requiredValidator],
-        uiType: UiTypeEnum.simpleTextField,
-      ),
-      FormFieldEnum.dob: const GenericInput<String>.pure(
-        value: '',
-        validators: [
-          requiredValidator,
-        ],
-        uiType: UiTypeEnum.simpleTextField,
-      ),
-      FormFieldEnum.email: const GenericInput<String>.pure(
-        value: '',
-        validators: [requiredValidator, emailValidator],
-        uiType: UiTypeEnum.simpleTextField,
-      ),
-      // FormFieldEnum.password: GenericInput<String>.pure(
-      //   value: '',
-      //   validators: [
-      //     requiredValidator,
-      //     minLengthValidator(8),
-      //     hasNumberValidator,
-      //     hasSpecialCharValidator,
-      //   ],
-      // ),
-      // FormFieldEnum.confirmPassword: GenericInput<String>.pure(
-      //   value: '',
-      //   validators: [requiredValidator, _confirmPasswordValidator],
-      // ),
-      // FormFieldEnum.age: GenericInput<String>.pure(
-      //   value: '20',
-      //   validators: [
-      //     requiredValidator,
-      //     _ageValidator,
-      //   ],
-      // ),
-      // Complex form fields
-      // FormFieldEnum.firstName: const GenericInput<String>.pure(
-      //   value: '',
-      //   validators: [requiredValidator],
-      // ),
-      FormFieldEnum.lastName: const GenericInput<String>.pure(
-        value: 'sec',
-        validators: [requiredValidator],
-        uiType: UiTypeEnum.simpleTextField,
-      ),
-      FormFieldEnum.dob: const GenericInput<String>.pure(
-        value: '',
-        validators: [
-          requiredValidator,
-        ],
-        uiType: UiTypeEnum.simpleTextField,
-      ),
-    };
-  }
-
-  /// Initialize Step 2 (Contact Details) with predefined fields and validators
-  static Map<FormFieldEnum, GenericInput> _initStep2Inputs() {
-    return {
-      FormFieldEnum.email: const GenericInput<String>.pure(
-        value: '',
-        validators: [requiredValidator, emailValidator],
-        uiType: UiTypeEnum.simpleTextField,
-      ),
-      FormFieldEnum.phone: const GenericInput<String>.pure(
-        value: '',
-        validators: [requiredValidator, phoneValidator],
-        uiType: UiTypeEnum.simpleTextField,
-      ),
-      FormFieldEnum.address: const GenericInput<String>.pure(
-        value: '',
-        validators: [], // Optional field, no validators
-        uiType: UiTypeEnum.simpleTextField,
-      ),
-    };
-  }
-
-  /// Initialize Step 3 (Preferences) with predefined fields and validators
-  static Map<FormFieldEnum, GenericInput> _initStep3Inputs() {
-    return {
-      FormFieldEnum.notificationChannel: const GenericInput<String>.pure(
-        value: '',
-        validators: [requiredValidator],
-        uiType: UiTypeEnum.simpleTextField,
-      ),
-      FormFieldEnum.termsAccepted: const GenericInput<bool>.pure(
-        value: false,
-        validators: [],
-        uiType: UiTypeEnum.simpleTextField,
-      ),
-    };
-  }
 
   bool isPersonalInfoValid(FacilityRegistrationFormzState state) {
-    return state.steps[0].inputs[FormFieldEnum.firstName]?.isValid == true &&
-        state.steps[0].inputs[FormFieldEnum.lastName]?.isValid == true &&
-        state.steps[0].inputs[FormFieldEnum.dob]?.isValid == true;
+    return state.steps[0].inputs[RegistrationInputKeys.firstName]?.isValid ==
+            true &&
+        state.steps[0].inputs[RegistrationInputKeys.lastName]?.isValid ==
+            true &&
+        state.steps[0].inputs[RegistrationInputKeys.dob]?.isValid == true;
   }
 
   bool isContactDetailsValid(FacilityRegistrationFormzState state) {
-    return state.steps[1].inputs[FormFieldEnum.email]?.isValid == true &&
-        state.steps[1].inputs[FormFieldEnum.phone]?.isValid == true;
+    return state.steps[1].inputs[RegistrationInputKeys.email]?.isValid ==
+            true &&
+        state.steps[1].inputs[RegistrationInputKeys.phone]?.isValid == true;
   }
 
   bool isPreferencesValid(FacilityRegistrationFormzState state) {
-    'isPreferencesValid : '.debug();
-    return (state.steps[2].inputs[FormFieldEnum.notificationChannel]?.isValid ==
-        true)
-      ..debug('isPreferencesValid : ');
+    return (state.steps[2].inputs[RegistrationInputKeys.notificationChannel]
+            ?.isValid ==
+        true);
   }
 
   @override
@@ -178,17 +81,6 @@ class FacilityRegistrationFormzState<StepState extends FormzStepBaseState>
   }
 }
 
-class CustomStep1 extends FormzStepState {
-  const CustomStep1({required super.stepId, required super.inputs});
-
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      'step1': {'ii': super.toJson()}
-    };
-  }
-}
-
 class FormzStepState extends FormzStepBaseState {
   const FormzStepState({
     required super.stepId,
@@ -201,7 +93,7 @@ class FormzStepState extends FormzStepBaseState {
   @override
   FormzStepState copyWith({
     String? stepId,
-    Map<FormFieldEnum, GenericInput>? inputs,
+    Map<String, GenericInput>? inputs,
     FormzSubmissionStatus? status,
     ValueGetter<Map<String, dynamic> Function()?>? apiJsonValidator,
     String? errorMessage,

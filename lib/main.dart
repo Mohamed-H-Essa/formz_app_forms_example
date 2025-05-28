@@ -161,20 +161,20 @@ class HomeScreen extends StatelessWidget {
 //   Widget build(BuildContext context) {
 //     return BlocBuilder<FormCubit, FormzState>(
 //       buildWhen: (previous, current) {
-//         final previousInput = previous.currentStep.inputs[FormFieldEnum.email]
+//         final previousInput = previous.currentStep.inputs[String.email]
 //             as GenericInput<String>?;
-//         final currentInput = current.currentStep.inputs[FormFieldEnum.email]
+//         final currentInput = current.currentStep.inputs[String.email]
 //             as GenericInput<String>?;
 //         return previousInput?.value != currentInput?.value ||
 //             previousInput?.isPure != currentInput?.isPure;
 //       },
 //       builder: (context, state) {
-//         final input = state.currentStep.inputs[FormFieldEnum.email]
+//         final input = state.currentStep.inputs[String.email]
 //             as GenericInput<String>?;
 //         return TextFormField(
 //           key: const Key('formScreen_emailInput_textField'),
 //           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-//                 FormFieldEnum.email,
+//                 String.email,
 //                 value,
 //               ),
 //           // initialValue: ,
@@ -198,30 +198,30 @@ class HomeScreen extends StatelessWidget {
 //     return BlocBuilder<FormCubit, FormzState>(
 //       buildWhen: (previous, current) {
 //         final previousInput = previous.currentStep
-//             .inputs[FormFieldEnum.password] as GenericInput<String>?;
-//         final currentInput = current.currentStep.inputs[FormFieldEnum.password]
+//             .inputs[String.password] as GenericInput<String>?;
+//         final currentInput = current.currentStep.inputs[String.password]
 //             as GenericInput<String>?;
 //         return previousInput?.value != currentInput?.value ||
 //             previousInput?.isPure != currentInput?.isPure;
 //       },
 //       builder: (context, state) {
-//         final input = state.currentStep.inputs[FormFieldEnum.password]
+//         final input = state.currentStep.inputs[String.password]
 //             as GenericInput<String>?;
 //         return TextFormField(
 //           key: const Key('formScreen_passwordInput_textField'),
 //           onChanged: (value) {
 //             context.read<FormCubit>().updateInput<String>(
-//                   FormFieldEnum.password,
+//                   String.password,
 //                   value,
 //                 );
 //             // If confirm password field exists, validate it again against new password
 //             final confirmPassword =
-//                 state.currentStep.inputs[FormFieldEnum.confirmPassword];
+//                 state.currentStep.inputs[String.confirmPassword];
 //             if (confirmPassword != null) {
 //               final confirmValue =
 //                   (confirmPassword as GenericInput<String>).value;
 //               context.read<FormCubit>().updateInput<String>(
-//                     FormFieldEnum.confirmPassword,
+//                     String.confirmPassword,
 //                     confirmValue,
 //                   );
 //             }
@@ -246,20 +246,20 @@ class HomeScreen extends StatelessWidget {
 //     return BlocBuilder<FormCubit, FormzState>(
 //       buildWhen: (previous, current) {
 //         final previousInput = previous.currentStep
-//             .inputs[FormFieldEnum.confirmPassword] as GenericInput<String>?;
+//             .inputs[String.confirmPassword] as GenericInput<String>?;
 //         final currentInput = current.currentStep
-//             .inputs[FormFieldEnum.confirmPassword] as GenericInput<String>?;
+//             .inputs[String.confirmPassword] as GenericInput<String>?;
 //         return previousInput?.value != currentInput?.value ||
 //             previousInput?.isPure != currentInput?.isPure;
 //       },
 //       builder: (context, state) {
-//         final input = state.currentStep.inputs[FormFieldEnum.confirmPassword]
+//         final input = state.currentStep.inputs[String.confirmPassword]
 //             as GenericInput<String>?;
 
 //         return TextFormField(
 //           key: const Key('formScreen_confirmPasswordInput_textField'),
 //           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-//                 FormFieldEnum.confirmPassword,
+//                 String.confirmPassword,
 //                 value,
 //               ),
 //           obscureText: true,
@@ -281,21 +281,21 @@ class HomeScreen extends StatelessWidget {
 //   Widget build(BuildContext context) {
 //     return BlocBuilder<FormCubit, FormzState>(
 //       buildWhen: (previous, current) {
-//         final previousInput = previous.currentStep.inputs[FormFieldEnum.age]
+//         final previousInput = previous.currentStep.inputs[String.age]
 //             as GenericInput<String>?;
-//         final currentInput = current.currentStep.inputs[FormFieldEnum.age]
+//         final currentInput = current.currentStep.inputs[String.age]
 //             as GenericInput<String>?;
 //         return previousInput?.value != currentInput?.value ||
 //             previousInput?.isPure != currentInput?.isPure;
 //       },
 //       builder: (context, state) {
-//         final input = state.currentStep.inputs[FormFieldEnum.age]
+//         final input = state.currentStep.inputs[String.age]
 //             as GenericInput<String>?;
 
 //         return TextFormField(
 //           key: const Key('formScreen_ageInput_textField'),
 //           onChanged: (value) => context.read<FormCubit>().updateInput<String>(
-//                 FormFieldEnum.age,
+//                 String.age,
 //                 value,
 //               ),
 //           keyboardType: TextInputType.number,
