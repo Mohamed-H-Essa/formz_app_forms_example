@@ -1,35 +1,39 @@
-String? requiredValidator(String value) =>
-    value.isEmpty ? 'This field is required' : null;
+import 'package:formz_example/shared/enum/input_error_enum.dart';
 
-String? phoneValidator(String value) {
+InputErrorEnum? requiredValidator(String value) =>
+    value.isEmpty ? InputErrorEnum.required : null;
+
+InputErrorEnum? phoneValidator(String value) {
   if (!RegExp(r'^\d{10}$').hasMatch(value)) {
-    return 'Please enter a valid 10-digit phone number';
+    return InputErrorEnum.invalidPhoneNumber;
   }
   return null;
 }
 
-String? emailValidator(String value) =>
-    RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value) ? null : 'Invalid email';
+InputErrorEnum? emailValidator(String value) =>
+    RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)
+        ? null
+        : InputErrorEnum.invalidEmail;
 
-String? Function(String) minLengthValidator(int minLength) {
+InputErrorEnum? Function(String) minLengthValidator(int minLength) {
   return (String value) =>
-      value.length >= minLength ? null : 'Minimum length is $minLength';
+      value.length >= minLength ? null : InputErrorEnum.tooLong;
 }
 
-String? hasNumberValidator(String value) => RegExp(r'[0-9]').hasMatch(value)
-    ? null
-    : 'Must contain at least one number';
+InputErrorEnum? hasNumberValidator(String value) =>
+    RegExp(r'[0-9]').hasMatch(value)
+        ? null
+        : InputErrorEnum.shouldContainNumber;
 
-String? hasSpecialCharValidator(String value) =>
+InputErrorEnum? hasSpecialCharValidator(String value) =>
     RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)
         ? null
-        : 'Must contain at least one special character';
+        : InputErrorEnum.shouldContainSpecialCharacter;
 
-String? numberRangeValidator(num value, num min, num max) =>
-    (value >= min && value <= max)
-        ? null
-        : 'Value must be between $min and $max';
+InputErrorEnum? numberRangeValidator(num value, num min, num max) =>
+    (value >= min && value <= max) ? null : InputErrorEnum.outOfRange;
 
-String? Function(String) patternValidator(RegExp pattern, String errorMessage) {
-  return (String value) => pattern.hasMatch(value) ? null : errorMessage;
+InputErrorEnum? Function(String) patternValidator(
+    RegExp pattern, InputErrorEnum errorType) {
+  return (String value) => pattern.hasMatch(value) ? null : errorType;
 }

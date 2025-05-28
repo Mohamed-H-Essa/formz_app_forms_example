@@ -36,7 +36,7 @@ abstract class FormzBaseState<StepStateB extends FormzStepBaseState>
   Map<String, dynamic> toJson() {
     Map<String, dynamic> result = {};
     for (int i = 0; i < steps.length; i++) {
-      result.addAll(steps[i].toJson());
+      result.addAll({steps[i].stepId: steps[i].toJson()});
     }
     return result;
   }

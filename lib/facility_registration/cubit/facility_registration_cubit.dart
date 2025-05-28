@@ -2,6 +2,7 @@ import 'package:formz/formz.dart';
 import 'package:formz_example/debug_extension.dart';
 import 'package:formz_example/shared/cubits/base_form_cubit.dart';
 import 'package:formz_example/shared/enum/form_field_enum.dart';
+import 'package:formz_example/shared/enum/input_error_enum.dart';
 import 'package:formz_example/shared/enum/ui_type_enum.dart';
 import 'package:formz_example/shared/generic_inputs/generic_input.dart';
 import 'package:formz_example/shared/validators/validators.dart';
@@ -33,7 +34,7 @@ class FacilityRegistrationFormCubit
       final confirmValidators = [
         requiredValidator,
         (String confirm) =>
-            confirm != passwordValue ? 'Passwords do not match' : null,
+            confirm != passwordValue ? InputErrorEnum.passwordMismatch : null,
       ];
 
       final updatedInputs = Map<FormFieldEnum, GenericInput<dynamic>>.from(

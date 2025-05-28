@@ -52,7 +52,6 @@ class FacilityRegistrationFormzState<StepState extends FormzStepBaseState>
         value: '',
         validators: [
           requiredValidator,
-          _dobValidator,
         ],
         uiType: UiTypeEnum.simpleTextField,
       ),
@@ -95,7 +94,6 @@ class FacilityRegistrationFormzState<StepState extends FormzStepBaseState>
         value: '',
         validators: [
           requiredValidator,
-          _dobValidator,
         ],
         uiType: UiTypeEnum.simpleTextField,
       ),
@@ -133,65 +131,11 @@ class FacilityRegistrationFormzState<StepState extends FormzStepBaseState>
       ),
       FormFieldEnum.termsAccepted: const GenericInput<bool>.pure(
         value: false,
-        validators: [_termsValidator],
+        validators: [],
         uiType: UiTypeEnum.simpleTextField,
       ),
     };
   }
-
-  /// Date of birth validator
-  static String? _dobValidator(String value) {
-    if (value.isEmpty) return null; // Let required validator handle this
-    final datePattern = RegExp(r'^\d{2}/\d{2}/\d{4}$');
-    if (!datePattern.hasMatch(value)) {
-      return 'Use format: DD/MM/YYYY';
-    }
-    return null;
-  }
-
-  /// Terms and conditions validator
-  static String? _termsValidator(bool value) {
-    return value != true ? 'You must accept the terms and conditions' : null;
-  }
-
-  /// Age validator
-  static String? _ageValidator(String value) {
-    if (value.isEmpty) return null; // Let required validator handle this
-    final age = int.tryParse(value);
-    if (age == null) return 'Please enter a valid number';
-    return numberRangeValidator(age, 18, 120);
-  }
-
-  /// Confirm password validator (dynamic validation handled in updateInput)
-  static String? _confirmPasswordValidator(String value) {
-    // This will be updated dynamically when password changes
-    return null;
-  }
-
-  // FormzStepState get currentStep {
-  //   return steps[currentStepIndex - 1];
-  //   // switch (currentStepIndex) {
-  //   //   case 1:
-  //   //     return step1;
-  //   //   case 2:
-  //   //     return step2;
-  //   //   case 3:
-  //   //     return step3;
-  //   //   default:
-  //   //     return step1;
-  //   // }
-  // }
-
-  // bool get isAllValid {
-  //   // return true;
-  //   return !steps.any((step) => step.isNotValid
-  //     ..debug('validator step No. ${step.stepId} is not valid: '));
-  //   // if (step1.isValid && step2.isValid && step3.isValid) {
-  //   //   return true;
-  //   // } else {
-  //   //   return false;
-  //   // }
-  // }
 
   bool isPersonalInfoValid(FacilityRegistrationFormzState state) {
     return state.steps[0].inputs[FormFieldEnum.firstName]?.isValid == true &&
@@ -239,7 +183,9 @@ class CustomStep1 extends FormzStepState {
 
   @override
   Map<String, dynamic> toJson() {
-    return {'step1': super.toJson()};
+    return {
+      'step1': {'ii': super.toJson()}
+    };
   }
 }
 

@@ -1,9 +1,10 @@
 import 'package:formz/formz.dart';
 import 'package:formz_example/debug_extension.dart';
+import 'package:formz_example/shared/enum/input_error_enum.dart';
 import 'package:formz_example/shared/enum/ui_type_enum.dart';
 import 'package:formz_example/shared/validators/validator_type.dart';
 
-class GenericInput<T> extends FormzInput<T, String> {
+class GenericInput<T> extends FormzInput<T, InputErrorEnum> {
   /// List of validator functions to apply to the input value
   final String id;
   final List<Validator<T>> validators;
@@ -61,7 +62,7 @@ class GenericInput<T> extends FormzInput<T, String> {
         super.dirty(value);
 
   @override
-  String? validator(T value) {
+  InputErrorEnum? validator(T value) {
     'String? validator'.debug();
     for (final validate in validators) {
       final error = validate(value);

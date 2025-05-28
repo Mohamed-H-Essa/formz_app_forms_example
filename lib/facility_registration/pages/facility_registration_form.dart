@@ -6,6 +6,7 @@ import 'package:formz_example/facility_registration/cubit/facility_registration_
 // import 'package:formz_example/form_input_complex.dart';
 import 'package:formz_example/shared/cubits/base_form_cubit.dart';
 import 'package:formz_example/shared/enum/form_field_enum.dart';
+import 'package:formz_example/shared/extension/to_string_error_extention.dart';
 import 'package:formz_example/shared/generic_inputs/generic_input.dart';
 import 'package:formz_example/shared/models/formz_state.dart';
 import '../cubit/facility_registration_cubit.dart';
@@ -260,7 +261,7 @@ class _PersonalInformationForm extends StatelessWidget {
               ),
           decoration: InputDecoration(
             labelText: 'First Name',
-            errorText: input?.displayError,
+            errorText: input?.displayError?.tr(context),
             border: const OutlineInputBorder(),
           ),
         );
@@ -290,7 +291,7 @@ class _PersonalInformationForm extends StatelessWidget {
               ),
           decoration: InputDecoration(
             labelText: 'Last Name',
-            errorText: input?.displayError,
+            errorText: input?.displayError?.tr(context),
             border: const OutlineInputBorder(),
           ),
         );
@@ -320,7 +321,7 @@ class _PersonalInformationForm extends StatelessWidget {
               ),
           decoration: InputDecoration(
             labelText: 'Date of Birth (DD/MM/YYYY)',
-            errorText: input?.displayError,
+            errorText: input?.displayError?.tr(context),
             border: const OutlineInputBorder(),
           ),
         );
@@ -367,7 +368,7 @@ class _ContactDetailsForm extends StatelessWidget {
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             labelText: 'Email',
-            errorText: input?.displayError,
+            errorText: input?.displayError?.tr(context),
             border: const OutlineInputBorder(),
           ),
         );
@@ -398,7 +399,7 @@ class _ContactDetailsForm extends StatelessWidget {
           keyboardType: TextInputType.phone,
           decoration: InputDecoration(
             labelText: 'Phone (10 digits)',
-            errorText: input?.displayError,
+            errorText: input?.displayError?.tr(context),
             border: const OutlineInputBorder(),
           ),
         );
@@ -429,7 +430,7 @@ class _ContactDetailsForm extends StatelessWidget {
           maxLines: 3,
           decoration: InputDecoration(
             labelText: 'Address (Optional)',
-            errorText: input?.displayError,
+            errorText: input?.displayError?.tr(context),
             border: const OutlineInputBorder(),
           ),
         );
@@ -497,11 +498,11 @@ class _PreferencesForm extends StatelessWidget {
                 },
               );
             }),
-            if (input?.displayError != null)
+            if (input?.displayError?.tr(context) != null)
               Padding(
                 padding: const EdgeInsets.only(left: 16.0),
                 child: Text(
-                  input!.displayError!,
+                  input!.displayError!.tr(context),
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.error,
                     fontSize: 12.0,
@@ -543,11 +544,11 @@ class _PreferencesForm extends StatelessWidget {
               },
               controlAffinity: ListTileControlAffinity.leading,
             ),
-            if (input?.displayError != null)
+            if (input?.displayError?.tr(context) != null)
               Padding(
                 padding: const EdgeInsets.only(left: 16.0),
                 child: Text(
-                  input!.displayError!,
+                  input!.displayError!.tr(context),
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.error,
                     fontSize: 12.0,
@@ -633,7 +634,10 @@ class MapBuilder<C extends FormCubitBase> extends StatelessWidget {
       BuildContext context, FormzBaseState state, FormFieldEnum fieldEnum) {
     final input = state.currentStep.inputs[fieldEnum] as GenericInput<String>?;
     input?.error.toString().debug('input?.error.');
-    input?.displayError.toString().debug('input?.displayError.');
+    input?.displayError
+        ?.tr(context)
+        .toString()
+        .debug('input?.displayError?.tr(context).');
     input?.isPure.toString().debug('input?.isPure.');
     return TextFormField(
       initialValue: input?.value,
@@ -645,7 +649,7 @@ class MapBuilder<C extends FormCubitBase> extends StatelessWidget {
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
         labelText: 'Email',
-        errorText: input?.displayError,
+        errorText: input?.displayError?.tr(context),
         border: const OutlineInputBorder(),
       ),
     );
@@ -664,7 +668,7 @@ class MapBuilder<C extends FormCubitBase> extends StatelessWidget {
       obscureText: true,
       decoration: InputDecoration(
         labelText: 'Password',
-        errorText: input?.displayError,
+        errorText: input?.displayError?.tr(context),
         border: const OutlineInputBorder(),
       ),
     );
@@ -683,7 +687,7 @@ class MapBuilder<C extends FormCubitBase> extends StatelessWidget {
       obscureText: true,
       decoration: InputDecoration(
         labelText: 'Confirm Password',
-        errorText: input?.displayError,
+        errorText: input?.displayError?.tr(context),
         border: const OutlineInputBorder(),
       ),
     );
@@ -703,7 +707,7 @@ class MapBuilder<C extends FormCubitBase> extends StatelessWidget {
       decoration: InputDecoration(
         labelText: 'Age',
         helperText: 'Must be between 18 and 120',
-        errorText: input?.displayError,
+        errorText: input?.displayError?.tr(context),
         prefixIcon: const Icon(Icons.person),
         border: const OutlineInputBorder(),
       ),
@@ -722,7 +726,7 @@ class MapBuilder<C extends FormCubitBase> extends StatelessWidget {
           ),
       decoration: InputDecoration(
         labelText: 'First Name',
-        errorText: input?.displayError,
+        errorText: input?.displayError?.tr(context),
         border: const OutlineInputBorder(),
       ),
     );
@@ -740,7 +744,7 @@ class MapBuilder<C extends FormCubitBase> extends StatelessWidget {
           ),
       decoration: InputDecoration(
         labelText: 'Last Name',
-        errorText: input?.displayError,
+        errorText: input?.displayError?.tr(context),
         border: const OutlineInputBorder(),
       ),
     );
@@ -758,7 +762,7 @@ class MapBuilder<C extends FormCubitBase> extends StatelessWidget {
           ),
       decoration: InputDecoration(
         labelText: 'Date of Birth (DD/MM/YYYY)',
-        errorText: input?.displayError,
+        errorText: input?.displayError?.tr(context),
         border: const OutlineInputBorder(),
       ),
     );
@@ -777,7 +781,7 @@ class MapBuilder<C extends FormCubitBase> extends StatelessWidget {
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
         labelText: 'Phone (10 digits)',
-        errorText: input?.displayError,
+        errorText: input?.displayError?.tr(context),
         border: const OutlineInputBorder(),
       ),
     );
@@ -796,7 +800,7 @@ class MapBuilder<C extends FormCubitBase> extends StatelessWidget {
       maxLines: 3,
       decoration: InputDecoration(
         labelText: 'Address (Optional)',
-        errorText: input?.displayError,
+        errorText: input?.displayError?.tr(context),
         border: const OutlineInputBorder(),
       ),
     );
@@ -831,11 +835,11 @@ class MapBuilder<C extends FormCubitBase> extends StatelessWidget {
             },
           );
         }),
-        if (input?.displayError != null)
+        if (input?.displayError?.tr(context) != null)
           Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: Text(
-              input!.displayError!,
+              input!.displayError!.tr(context),
               style: TextStyle(
                 color: Theme.of(context).colorScheme.error,
                 fontSize: 12.0,
@@ -865,11 +869,11 @@ class MapBuilder<C extends FormCubitBase> extends StatelessWidget {
           },
           controlAffinity: ListTileControlAffinity.leading,
         ),
-        if (input?.displayError != null)
+        if (input?.displayError?.tr(context) != null)
           Padding(
             padding: const EdgeInsets.only(left: 16.0),
             child: Text(
-              input!.displayError!,
+              input!.displayError!.tr(context),
               style: TextStyle(
                 color: Theme.of(context).colorScheme.error,
                 fontSize: 12.0,
@@ -892,7 +896,7 @@ class MapBuilder<C extends FormCubitBase> extends StatelessWidget {
           ),
       decoration: InputDecoration(
         labelText: _getFieldLabel(fieldEnum),
-        errorText: input?.displayError,
+        errorText: input?.displayError?.tr(context),
         border: const OutlineInputBorder(),
       ),
     );

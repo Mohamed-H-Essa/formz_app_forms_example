@@ -1,0 +1,19 @@
+enum InputErrorEnum {
+  required,
+  tooShort,
+  tooLong,
+  outOfRange,
+  invalidFormat,
+  shouldContainSpecialCharacter,
+  shouldContainUppercase,
+  shouldContainLowercase,
+  shouldContainNumber,
+  invalidEmail,
+  invalidPhoneNumber,
+  passwordMismatch,
+  alreadyExists,
+  notFound,
+  invalidDate,
+  futureDateNotAllowed,
+  pastDateNotAllowed
+}
