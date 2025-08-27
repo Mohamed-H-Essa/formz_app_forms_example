@@ -15,5 +15,9 @@ enum InputErrorEnum {
   notFound,
   invalidDate,
   futureDateNotAllowed,
-  pastDateNotAllowed
+  pastDateNotAllowed,
+  weakPassword,
+  multiFiles,
+  arabicOnly,
+  mustBeFourParts
 }

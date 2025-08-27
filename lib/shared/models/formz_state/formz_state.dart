@@ -1,8 +1,12 @@
-import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:formz_example/shared/models/step_state.dart';
+import 'package:types_package/types_package.dart';
+import 'package:formz_example/shared/mixins_behavior/async_to_json.dart';
+import 'package:formz_example/shared/mixins_behavior/sync_to_json.dart';
+import 'package:formz_example/shared/models/formz_step/step_state.dart';
+part 'formz_async_state.dart';
+part 'formz_sync_state.dart';
 
-abstract class FormzBaseState<StepStateB extends FormzStepBaseState>
+sealed class FormzBaseState<StepStateB extends FormzStepBaseState>
     extends Equatable {
   final List<StepStateB> steps;
   final int currentStepIndex;
@@ -13,7 +17,9 @@ abstract class FormzBaseState<StepStateB extends FormzStepBaseState>
     required this.currentStepIndex,
     required this.status,
     required this.erroneousSteps,
-  });
+  })  : assert(steps.length > 0, 'steps cannot be empty'),
+        assert(currentStepIndex >= 0 && currentStepIndex < steps.length,
+            'currentStepIndex out of bounds');
 
   factory FormzBaseState.init() {
     throw UnimplementedError('Concrete class must implement init method!');
@@ -33,14 +39,19 @@ abstract class FormzBaseState<StepStateB extends FormzStepBaseState>
     // }
   }
 
-  Map<String, dynamic> toJson() {
-    Map<String, dynamic> result = {};
-    for (int i = 0; i < steps.length; i++) {
-      result.addAll({steps[i].stepId: steps[i].toJson()});
-    }
-    return result;
+  // Map<String, dynamic> toJson() {
+  //   Map<String, dynamic> result = {};
+  //   for (int i = 0; i < steps.length; i++) {
+  //     result.addAll({steps[i].stepId: steps[i].toJson()});
+  //   }
+  //   return result;
+  // }
+
+  bool validateCurrentStep() {
+    return currentStep.isValid;
   }
 
+  //! important: when using the copyWith make sure to bear in mind providing the current step by integrating it with (steps)
   FormzBaseState copyWith({
     StepStateB? currentStep,
     List<StepStateB>? steps,
@@ -48,6 +59,20 @@ abstract class FormzBaseState<StepStateB extends FormzStepBaseState>
     FormzSubmissionStatus? status,
     List<int>? erroneousSteps,
   });
+  // {
+  //   final updatedSteps = steps ??
+  //       (currentStep == null
+  //           ? this.steps
+  //           : (List<StepStateB>.from(this.steps)
+  //             ..[this.currentStepIndex] = currentStep));
+
+  //   return FormzBaseState<StepStateB>(
+  //     steps: updatedSteps,
+  //     currentStepIndex: currentStepIndex ?? this.currentStepIndex,
+  //     status: status ?? this.status,
+  //     erroneousSteps: erroneousSteps ?? this.erroneousSteps,
+  //   );
+  // }
   //  {
   //   return FormzState(
   //     steps: steps ??

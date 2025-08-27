@@ -1,13 +1,18 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:formz/formz.dart';
-import 'package:formz_example/shared/generic_inputs/generic_input.dart';
+import 'package:formz_example/shared/generic_inputs/generic_input/generic_input.dart';
+import 'package:formz_example/shared/mixins_behavior/async_to_json.dart';
+import 'package:formz_example/shared/mixins_behavior/sync_to_json.dart';
+part 'async_step_state.dart';
+part 'sync_step_state.dart';
 
-abstract class FormzStepBaseState extends Equatable {
+sealed class FormzStepBaseState<T extends GenericInput> extends Equatable {
   final String stepId;
+  final String stepTitle;
 
   /// Map of form inputs, keyed by String enum values
-  final Map<String, GenericInput> inputs;
+  final Map<String, T> inputs;
   final String? errorMessage;
 
   /// Optional function to convert form inputs to a JSON structure for API validation
@@ -24,20 +29,12 @@ abstract class FormzStepBaseState extends Equatable {
   /// [status] - Form submission status, defaults to initial
   const FormzStepBaseState({
     required this.stepId,
+    required this.stepTitle,
     required this.inputs,
     this.status = FormzSubmissionStatus.initial,
     this.apiJsonValidator,
     this.errorMessage,
   });
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> result = {};
-    for (final entry in inputs.entries) {
-      final inputJson = entry.value.toJson;
-      result.addAll(inputJson);
-    }
-    return result;
-  }
 
   /// Whether all inputs in the form are valid
   bool get isValid => !isNotValid;
@@ -59,7 +56,8 @@ abstract class FormzStepBaseState extends Equatable {
   /// [errorMessage] - New error message (optional)
   FormzStepBaseState copyWith({
     String? stepId,
-    Map<String, GenericInput>? inputs,
+    String? stepTitle,
+    Map<String, T>? inputs,
     FormzSubmissionStatus? status,
     ValueGetter<Map<String, dynamic> Function()?>? apiJsonValidator,
     String? errorMessage,
@@ -68,6 +66,16 @@ abstract class FormzStepBaseState extends Equatable {
   @override
   String toString() {
     return 'FormzStepState{stepId=$stepId, inputs=$inputs, status=$status}';
+  }
+
+  Map<String, T> inputsFromJson(Map<String, dynamic> json) {
+    final Map<String, T> inputs = this.inputs;
+    return inputs.map(
+      (k, v) => MapEntry(
+        k,
+        v.copyWith(value: () => v.valueFromJson(json)) as T,
+      ),
+    );
   }
 
   @override

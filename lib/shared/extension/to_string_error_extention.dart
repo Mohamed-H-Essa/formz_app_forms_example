@@ -1,44 +1,51 @@
-import 'package:formz_example/shared/enum/input_error_enum.dart';
-
 import 'package:flutter/material.dart';
+import 'package:formz_example/shared/enum/input_error_enum.dart';
 
 extension InputErrorToString on InputErrorEnum {
   String tr(BuildContext context) {
     switch (this) {
       case InputErrorEnum.required:
-        return 'This field is required';
+        return "Field is required";
       case InputErrorEnum.tooShort:
-        return 'Input is too short';
+        return "Input is too short";
       case InputErrorEnum.tooLong:
-        return 'Input is too long';
+        return "Input is too long";
       case InputErrorEnum.outOfRange:
-        return 'Value is out of range';
+        return "Value is out of range";
       case InputErrorEnum.invalidFormat:
-        return 'Invalid format';
+        return "Invalid format";
       case InputErrorEnum.shouldContainSpecialCharacter:
-        return 'Must contain at least one special character';
+        return "Should contain special character";
       case InputErrorEnum.shouldContainUppercase:
-        return 'Must contain at least one uppercase letter';
+        return "Should contain uppercase letter";
       case InputErrorEnum.shouldContainLowercase:
-        return 'Must contain at least one lowercase letter';
+        return "Should contain lowercase letter";
       case InputErrorEnum.shouldContainNumber:
-        return 'Must contain at least one number';
+        return "Should contain number";
       case InputErrorEnum.invalidEmail:
-        return 'Invalid email address';
+        return "Invalid email address";
       case InputErrorEnum.invalidPhoneNumber:
-        return 'Invalid phone number';
+        return "Invalid phone number";
       case InputErrorEnum.passwordMismatch:
-        return 'Passwords do not match';
+        return "Password mismatch";
       case InputErrorEnum.alreadyExists:
-        return 'Already exists';
+        return "Already exists";
       case InputErrorEnum.notFound:
-        return 'Not found';
+        return "Not found";
       case InputErrorEnum.invalidDate:
-        return 'Invalid date';
+        return "Invalid date";
       case InputErrorEnum.futureDateNotAllowed:
-        return 'Future date is not allowed';
+        return "Future date not allowed";
       case InputErrorEnum.pastDateNotAllowed:
-        return 'Past date is not allowed';
+        return "Past date not allowed";
+      case InputErrorEnum.weakPassword:
+        return "Password is too weak";
+      case InputErrorEnum.multiFiles:
+        return "Multiple files error";
+      case InputErrorEnum.arabicOnly:
+        return "Arabic only";
+      case InputErrorEnum.mustBeFourParts:
+        return "Full name validation error";
     }
   }
 }
